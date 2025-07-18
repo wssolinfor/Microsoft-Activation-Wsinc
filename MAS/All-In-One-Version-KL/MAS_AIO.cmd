@@ -1,7 +1,27 @@
 @::yfh37fow-random
-@set masver=3.5
+@set masver=3.4
 @setlocal DisableDelayedExpansion
 @echo off
+
+
+
+::  For command line switches, check mass<>grave<.>dev/command_line_switches
+::  If you want to better understand script, read from MAS separate files version. 
+
+
+
+::============================================================================
+::
+::   Homepage: mass<>grave<.>dev
+::      Email: mas.help@outlook.com
+::
+::============================================================================
+
+
+
+::========================================================================================================================================
+
+::  Set environment variables, it helps if they are misconfigured in the system
 
 setlocal EnableExtensions
 setlocal DisableDelayedExpansion
@@ -26,11 +46,16 @@ if /i "%%#"=="re1" set re1=1
 if /i "%%#"=="re2" set re2=1
 )
 
+:: Re-launch the script with x64 process if it was initiated by x86 process on x64 bit Windows
+:: or with ARM64 process if it was initiated by x86/ARM32 process on ARM64 Windows
+
 if exist %SystemRoot%\Sysnative\cmd.exe if not defined re1 (
 setlocal EnableDelayedExpansion
 start %SystemRoot%\Sysnative\cmd.exe /c ""!_cmdf!" %* re1"
 exit /b
 )
+
+:: Re-launch the script with ARM32 process if it was initiated by x64 process on ARM64 Windows
 
 if exist %SystemRoot%\SysArm32\cmd.exe if %PROCESSOR_ARCHITECTURE%==AMD64 if not defined re2 (
 setlocal EnableDelayedExpansion
@@ -50,10 +75,10 @@ set "selfgit=ht%blank%tps%blank%://git.acti%blank%vated.win/massg%blank%rave/Mic
 sc query Null | find /i "RUNNING"
 if %errorlevel% NEQ 0 (
 echo:
-echo O serviço Null nao esta em execucao, o ativador pode travar...
+echo Null service is not running, script may crash...
 echo:
 echo:
-echo Acesse a webpage para obter ajuda - %mas%fix_service
+echo Check this webpage for help - %mas%fix_service
 echo:
 echo:
 ping 127.0.0.1 -n 20
@@ -62,13 +87,26 @@ cls
 
 ::  Check LF line ending
 
-
+pushd "%~dp0"
+>nul findstr /v "$" "%~nx0" && (
+echo:
+echo Error - Script either has LF line ending issue or an empty line at the end of the script is missing.
+echo:
+echo:
+echo Check this webpage for help - %mas%troubleshoot
+echo:
+echo:
+ping 127.0.0.1 -n 20 >nul
+popd
+exit /b
+)
+popd
 
 ::========================================================================================================================================
 
 cls
 color 07
-title  Microsoft-Activation-Wsinc %masver%
+title  Microsoft_Activation_Scripts %masver%
 
 set _args=
 set _elev=
@@ -97,22 +135,22 @@ call :dk_setvar
 
 if %winbuild% EQU 1 (
 %eline%
-echo Falha ao detectar numero da compilacao [Build] do Windows.
+echo Failed to detect Windows build number.
 echo:
 setlocal EnableDelayedExpansion
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
 if %winbuild% LSS 6001 (
 %nceline%
-echo Versao OS de sistema nao suportado detectado [%winbuild%].
-echo O ativador tem suporte a apenas o Windows Vista/7/8/8.1/10/11 e seu Server equivalente.
+echo Unsupported OS version detected [%winbuild%].
+echo MAS only supports Windows Vista/7/8/8.1/10/11 and their Server equivalents.
 if %winbuild% EQU 6000 (
 echo:
-echo Windows Vista RTM não ten suporte a ativacao por nao ter Powershell instalado.
-echo Atualize o sistema para Windows Vista SP1 or SP2.
+echo Windows Vista RTM is not supported because Powershell cannot be installed.
+echo Upgrade to Windows Vista SP1 or SP2.
 )
 goto dk_done
 )
@@ -120,9 +158,9 @@ goto dk_done
 if %winbuild% LSS 7600 if not exist "%SysPath%\WindowsPowerShell\v1.0\Modules" (
 %nceline%
 if not exist %ps% (
-echo Aplicativo PowerShell nao instalado no sistema.
+echo PowerShell is not installed in your system.
 )
-echo Instale o PowerShell 2.0 usando o link oficial abaixo:
+echo Install PowerShell 2.0 using the following URL.
 echo:
 echo https://www.catalog.update.microsoft.com/Search.aspx?q=KB968930
 if %_unattended%==0 start https://www.catalog.update.microsoft.com/Search.aspx?q=KB968930
@@ -151,10 +189,10 @@ setlocal EnableDelayedExpansion
 echo "!_batf!" | find /i "!_ttemp!" %nul1% && (
 if /i not "!_work!"=="!_ttemp!" (
 %eline%
-echo O ativador esta sendo iniciado de uma pasta temporaria.
-echo Provavelmente voce esta executando o ativador diretamente do arquivo compactado.
+echo The script was launched from the temp folder.
+echo You are most likely running the script directly from the archive file.
 echo:
-echo Extraia o arquivo compactado e execute o ativador diretamente da pasta extraida.
+echo Extract the archive file and launch the script from the extracted folder.
 goto dk_done
 )
 )
@@ -166,8 +204,8 @@ goto dk_done
 %nul1% fltmc || (
 if not defined _elev %psc% "start cmd.exe -arg '/c \"!_PSarg!\"' -verb runas" && exit /b
 %eline%
-echo O ativador precisa ser executado com permissoes administrativas.
-echo Clique com o botao direito do mouse e clique na opcao 'Executar como Administrador'.
+echo This script needs admin rights.
+echo Right click on this script and select 'Run as administrator'.
 goto dk_done
 )
 
@@ -189,18 +227,18 @@ echo:
 REM check LanguageMode
 
 echo: !tstresult2! | findstr /i "ConstrainedLanguage RestrictedLanguage NoLanguage" %nul1% && (
-echo O modo FullLanguage nao encontrado no PowerShell. Abortando...
-echo Se voce aplicou restrincoes no Powershell, favor desfazer as alteracoes.
+echo FullLanguage mode not found in PowerShell. Aborting...
+echo If you have applied restrictions on Powershell then undo those changes.
 echo:
 set fixes=%fixes% %mas%fix_powershell
-call :dk_color2 %Blue% "Veja essa webpage para ajuda - " %_Yellow% " %mas%fix_powershell"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%fix_powershell"
 goto dk_done
 )
 
 REM check Powershell core version
 
 cmd /c "%psc% "$PSVersionTable.PSEdition"" | find /i "Core" %nul1% && (
-echo O Windows Powershell e necessario para o ativador, mas parece ter sido substituido pelo nucleo do Powershell. Abortando...
+echo Windows Powershell is needed for MAS but it seems to be replaced with Powershell core. Aborting...
 goto dk_done
 )
 
@@ -208,26 +246,26 @@ REM check for Mal-ware that may cause issues with Powershell
 
 for /r "%ProgramFiles%\" %%f in (secureboot.exe) do if exist "%%f" (
 echo "%%f"
-echo Mal%blank%ware encontrado. O PowerShell nao esta funcionando corretamente.
+echo Mal%blank%ware found, PowerShell is not working properly.
 echo:
 set fixes=%fixes% %mas%remove_mal%w%ware
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%remove_mal%w%ware"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%remove_mal%w%ware"
 goto dk_done
 )
 
 REM check antivirus and other errors
 
-echo O PowerShell nao esta funcionando corretamente. Abortando...
+echo PowerShell is not working properly. Aborting...
 
 if /i "!tstresult2!"=="FullLanguage" (
 echo:
-echo Seu antivirus pode estar aplicando falso positivo e bloqueando o ativador ou o PowerShell no seu sistema pode estar corrompido.
+echo Your antivirus software might be blocking the script, or PowerShell on your system might be corrupted.
 cmd /c "%psc% ""$av = Get-WmiObject -Namespace root\SecurityCenter2 -Class AntiVirusProduct; $n = @(); foreach ($i in $av) { $n += $i.displayName }; if ($n) { Write-Host ('Installed Antivirus - ' + ($n -join ', '))}"""
 )
 
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
@@ -274,6 +312,44 @@ exit /b
 
 ::========================================================================================================================================
 
+::  Check for updates
+
+set -=
+set old=
+set pingp=
+set upver=%masver:.=%
+
+for %%A in (
+activ%-%ated.win
+mass%-%grave.dev
+) do if not defined pingp (
+for /f "delims=[] tokens=2" %%B in ('ping -n 1 %%A') do (
+if not "%%B"=="" (set old=1& set pingp=1)
+for /f "delims=[] tokens=2" %%C in ('ping -n 1 updatecheck%upver%.%%A') do (
+if not "%%C"=="" set old=
+)
+)
+)
+
+if defined old (
+echo ________________________________________________
+%eline%
+echo Your version of MAS [%masver%] is outdated.
+echo ________________________________________________
+echo:
+if not %_unattended%==1 (
+echo [1] Get Latest MAS
+echo [0] Continue Anyway
+echo:
+call :dk_color %_Green% "Choose a menu option using your keyboard [1,0] :"
+choice /C:10 /N
+if !errorlevel!==2 rem
+if !errorlevel!==1 (start %selfgit% & start %github% & start %mas% & exit /b)
+)
+)
+
+::========================================================================================================================================
+
 if not exist "%SystemRoot%\Temp\" mkdir "%SystemRoot%\Temp" %nul%
 
 ::  Run script with parameters in unattended mode
@@ -304,7 +380,7 @@ setlocal EnableDelayedExpansion
 
 if not defined desktop (
 %eline%
-echo Nao foi possivel detectar a localizacao da Area de Trabalho do computador, abortando...
+echo Unable to detect Desktop location, aborting...
 goto dk_done
 )
 
@@ -314,7 +390,7 @@ goto dk_done
 
 cls
 color 07
-title  Microsoft %blank%Activation %blank%Wsinc %masver%
+title  Microsoft %blank%Activation %blank%Scripts %masver%
 if not defined terminal mode 76, 34
 
 if %winbuild% GEQ 10240 if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-*EvalEdition~*.mum" set _hwidgo=1
@@ -337,9 +413,7 @@ echo:
 echo:
 echo:       ______________________________________________________________
 echo:
-echo:                           Metodos de Ativacao:
-echo:       ______________________________________________________________
-echo:
+echo:                 Activation Methods:
 echo:
 if defined _hwidgo (
 call :dk_color3 %_White% "             [1] " %_Green% "HWID" %_White% "                - Windows"
@@ -354,24 +428,24 @@ echo:             [2] Ohook               - Office
 if defined _tsforgego (
 call :dk_color3 %_White% "             [3] " %_Green% "TSforge" %_White% "             - Windows / Office / ESU"
 ) else (
-echo:             [3] TSforge             - Windows / Office
+echo:             [3] TSforge             - Windows / Office / ESU
 )
 echo:             [4] KMS38               - Windows
 echo:             [5] Online KMS          - Windows / Office
 echo:             __________________________________________________ 
 echo:
-echo:             [6] Verificar status da ativacao atual
-echo:             [7] Alterar Edicao do Windows instalado
-echo:             [8] Alterar Edicao do Office instalado
+echo:             [6] Check Activation Status
+echo:             [7] Change Windows Edition
+echo:             [8] Change Office Edition
 echo:             __________________________________________________      
 echo:
-echo:             [9] Solucao de problemas
+echo:             [9] Troubleshoot
 echo:             [E] Extras
-echo:             [H] Ajuda
-call :dk_color3 %_Red% "             [0] " %_White% "Sair
+echo:             [H] Help
+echo:             [0] Exit
 echo:       ______________________________________________________________
 echo:
-call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...E,H,0] :"
+call :dk_color2 %_White% "         " %_Green% "Choose a menu option using your keyboard [1,2,3...E,H,0] :"
 choice /C:123456789EH0 /N
 set _erl=%errorlevel%
 
@@ -412,15 +486,15 @@ echo:
 echo:
 echo:           ______________________________________________________
 echo:           
-echo:                [1] Extrair Pasta $OEM$ para Computador
+echo:                [1] Extract $OEM$ Folder
 echo:                  
-echo:                [2] Baixar Windows / Office Autentico 
+echo:                [2] Download Genuine Windows / Office 
 echo:                ____________________________________________      
 echo:                                                                          
-echo:                [0] Voltar ao Menu Principal
+echo:                [0] Go to Main Menu
 echo:           ______________________________________________________
 echo:
-call :dk_color2 %_White% "                  " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,0] :"
+call :dk_color2 %_White% "             " %_Green% "Choose a menu option using your keyboard [1,2,0] :"
 choice /C:120 /N
 set _erl=%errorlevel%
 
@@ -434,15 +508,15 @@ goto :Extras
 :Extract$OEM$
 
 cls
-title  Extrair Pasta $OEM$
+title  Extract $OEM$ Folder
 if not defined terminal mode 76, 30
 
 if exist "!desktop!\$OEM$\" (
 %eline%
-echo $OEM$ Pasta ja existente no Computador.
+echo $OEM$ folder already exists on the Desktop.
 echo _____________________________________________________
 echo:
-call :dk_color %_Yellow% "Pressione [0] para %_exitmsg%..."
+call :dk_color %_Yellow% "Press [0] key to %_exitmsg%..."
 choice /c 0 /n
 goto :Extras
 )
@@ -450,13 +524,13 @@ goto :Extras
 :Extract$OEM$2
 
 cls
-title  Extrair Pasta $OEM$
+title  Extract $OEM$ Folder
 if not defined terminal mode 78, 30
 echo:
 echo:
 echo:
 echo:
-echo:                   Extrair Pasta $OEM$ para Area de Trabalho           
+echo:                     Extract $OEM$ folder on the desktop           
 echo:         ____________________________________________________________
 echo:
 echo:            [1] HWID             [Windows]
@@ -469,11 +543,11 @@ echo:            [6] HWID    [Windows] ^+ Ohook [Office]
 echo:            [7] HWID    [Windows] ^+ Ohook [Office] ^+ TSforge [ESU]
 echo:            [8] TSforge [Windows] ^+ Online KMS [Office]
 echo:
-call :dk_color2 %_White% "            [R] " %_Green% "Leia-me"
-echo:            [0] Voltar ao Menu Principal
+call :dk_color2 %_White% "            [R] " %_Green% "ReadMe"
+echo:            [0] Go Back
 echo:         ____________________________________________________________
 echo:  
-call :dk_color2 %_White% "             " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...R,0] :"
+call :dk_color2 %_White% "             " %_Green% "Choose a menu option using your keyboard :"
 choice /C:12345678R0 /N
 set _erl=%errorlevel%
 
@@ -514,17 +588,17 @@ if not exist "!_dir!\SetupComplete.cmd" set _error=1
 
 if defined _error (
 %eline%
-echo O ativador falhou ao criar a pasta $OEM$.
+echo The script failed to create the $OEM$ folder.
 if exist "!desktop!\$OEM$\.*" rmdir /s /q "!desktop!\$OEM$\" %nul%
 ) else (
 echo:
 call :dk_color %Blue% "%_oem%"
-call :dk_color %Green% "$OEM$ A pasta foi criada com sucesso na sua Area de Trabalho."
+call :dk_color %Green% "$OEM$ folder was successfully created on your Desktop."
 )
 echo "%_oem%" | find /i "KMS38" 1>nul && (
 echo:
-echo Para ativacao KMS38 Server Cor/Acor edicoes ^(Nenhuma versao GUI^),
-echo Acesse esta pagina %mas%oem-folder
+echo To KMS38 activate Server Cor/Acor editions ^(No GUI Versions^),
+echo Check this page %mas%oem-folder
 )
 echo ___________________________________________________________________
 echo:
@@ -548,7 +622,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  Ativacao HWID %masver%
+title  HWID Activation %masver%
 
 set _args=
 set _elev=
@@ -593,10 +667,10 @@ if not defined terminal (
 mode 110, 34
 if exist "%SysPath%\spp\store_test\" mode 134, 34
 )
-title  Ativacao HWID %masver%
+title  HWID Activation %masver%
 
 echo:
-echo Inicializando...
+echo Initializing...
 call :dk_chkmal
 
 for %%# in (
@@ -612,7 +686,7 @@ call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Re
 call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 goto dk_done
 )
@@ -637,11 +711,11 @@ if defined _perm (
 cls
 echo ___________________________________________________________________________________________
 echo:
-call :dk_color2 %_White% "     " %Green% "%winos% ja esta ativado com licenca permanente."
+call :dk_color2 %_White% "     " %Green% "%winos% is already permanently activated."
 echo ___________________________________________________________________________________________
 if %_unattended%==1 goto dk_done
 echo:
-choice /C:10 /N /M ">    [1] Ativar mesmo assim [0] %_exitmsg% : "
+choice /C:10 /N /M ">    [1] Activate Anyway [0] %_exitmsg% : "
 if errorlevel 2 exit /b
 )
 cls
@@ -655,11 +729,11 @@ reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID %nul2
 %eline%
 echo [%winos% ^| %winbuild%]
 echo:
-echo As edicaes de avaliacao nao podem ser ativadas fora do periodo de avaliacao.
-call :dk_color %Blue% "Use a opcao de ativacao "TSforge" no Menu Principal para redefinir o periodo de avaliacao."
+echo Evaluation editions cannot be activated outside of their evaluation period.
+call :dk_color %Blue% "Use TSforge activation option from the main menu to reset evaluation period."
 echo:
 set fixes=%fixes% %mas%evaluation_editions
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%evaluation_editions"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%evaluation_editions"
 goto dk_done
 )
 )
@@ -731,7 +805,7 @@ if not defined key call :hwidfallback
 if defined altkey (set key=%altkey%&set changekey=1&set notworking=)
 
 if defined notworking if defined notfoundaltactID (
-call :dk_color %Red% "Verificando Edicao Alternativa para HWID     [%altedition% ID de Ativacao nao encontrado]"
+call :dk_color %Red% "Checking Alternate Edition For HWID     [%altedition% Activation ID Not Found]"
 )
 
 if not defined key (
@@ -746,7 +820,7 @@ echo %mas%
 ) else (
 echo Required license files not found in %SysPath%\spp\tokens\skus\
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 echo:
 goto dk_done
@@ -865,13 +939,13 @@ if exist "%tdir%\Genuine*" del /f /q "%tdir%\Genuine*" %nul%
 call :dk_product
 
 echo:
-echo Ativando...
+echo Activating...
 
 call :dk_act
 call :dk_checkperm
 if defined _perm (
 echo:
-call :dk_color %Green% "%winos% esta ativado permanentemente com uma licenca digital."
+call :dk_color %Green% "%winos% is permanently activated with a digital license."
 goto :dl_final
 )
 
@@ -926,7 +1000,7 @@ findstr /i "%%#" "%SysPath%\drivers\etc\hosts" %nul1% && set "hosfail= [%%# Bloc
 )
 call :dk_color %Red% "Checking Licensing Servers              [Failed to Connect]!hosfail!"
 set fixes=%fixes% %mas%licensing-servers-issue
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%licensing-servers-issue"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%licensing-servers-issue"
 )
 
 ::==========================================================================================================================================
@@ -963,7 +1037,7 @@ call :dk_color %Red% "Checking Windows Update Registry        [Corruption Found]
 if !wcount! GTR 2 (
 call :dk_color %Red% "Windows seems to be infected with Mal%w%ware."
 set fixes=%fixes% %mas%remove_mal%w%ware
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%remove_mal%w%ware"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%remove_mal%w%ware"
 ) else (
 call :dk_color %Blue% "HWID activation needs working Windows updates, if you have used any tool to block updates, undo it."
 )
@@ -988,7 +1062,7 @@ if not defined wucorrupt if not defined wublock if not defined wuerror if not de
 echo "%error_code%" | findstr /i "0x80072e 0x80072f 0x800704cf 0x87e10bcf 0x800705b4" %nul% && (
 call :dk_color %Red% "Checking Internet Issues                [Found] %error_code%"
 set fixes=%fixes% %mas%licensing-servers-issue
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%licensing-servers-issue"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%licensing-servers-issue"
 )
 )
 )
@@ -997,16 +1071,16 @@ call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%l
 
 echo:
 if defined _perm (
-call :dk_color %Green% "%winos% esta ativado permanentemente com uma licenca digital."
+call :dk_color %Green% "%winos% is permanently activated with a digital license."
 ) else (
-call :dk_color %Red% "Falha na Ativacao %error_code%"
+call :dk_color %Red% "Activation Failed %error_code%"
 if defined notworking (
-call :dk_color %Blue% "No momento da redacao de artigos da Microsoft, a ativacao "HWID" nao e compativel com este produto."
-call :dk_color %Blue% "Em vez disso, use a opcao de ativação do "TSforge" no Menu Principal."
+call :dk_color %Blue% "At the time of writing, HWID Activation is not supported for this product."
+call :dk_color %Blue% "Use TSforge activation option from the main menu instead."
 ) else (
 if not defined error call :dk_color %Blue% "%_fixmsg%"
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 )
 
@@ -1019,9 +1093,9 @@ echo:
 if defined regionchange (
 %psc% "Set-WinHomeLocation -GeoId %nation%" %nul%
 if !errorlevel! EQU 0 (
-echo Restaurando Regiao do Windows                [Restaurado com Sucesso]
+echo Restoring Windows Region                [Successful]
 ) else (
-call :dk_color %Red% "Restaurando Regiao do Windows                [Falha] [%name% - %nation%]"
+call :dk_color %Red% "Restoring Windows Region                [Failed] [%name% - %nation%]"
 )
 )
 
@@ -1082,11 +1156,11 @@ set "_Yellow="Black" "Yellow""
 set "nceline=echo: &echo ==== ERROR ==== &echo:"
 set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
 if %~z0 GEQ 200000 (
-set "_exitmsg=Voltar ao Menu Principal"
-set "_fixmsg=Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcoo Corrigir licenciamento."
+set "_exitmsg=Go back"
+set "_fixmsg=Go back to Main Menu, select Troubleshoot and run Fix Licensing option."
 ) else (
-set "_exitmsg=Sair"
-set "_fixmsg=In Pasta MAS, execute o script de "Solucao de problemas" e selecione a opcaoo Corrigir licenciamento."
+set "_exitmsg=Exit"
+set "_fixmsg=In MAS folder, run Troubleshoot script and select Fix Licensing option."
 )
 exit /b
 
@@ -1105,7 +1179,7 @@ if defined UBR (set "fullbuild=%%G.!UBR!") else (set "fullbuild=%%G.%%H")
 )
 )
 
-echo Verificando Informacao do Sistema                        [%winos% ^| %fullbuild% ^| %osarch%]
+echo Checking OS Info                        [%winos% ^| %fullbuild% ^| %osarch%]
 exit /b
 
 ::  Check SKU value
@@ -1192,11 +1266,11 @@ if %keyerror% NEQ 0 set "keyerror=[0x%=ExitCode%]"
 if defined generickey (set "keyecho=Installing Generic Product Key         ") else (set "keyecho=Installing Product Key                 ")
 if %keyerror% EQU 0 (
 if %sps%==SoftwareLicensingService call :dk_refresh
-echo %keyecho% %~1 [Sucesso]
+echo %keyecho% %~1 [Successful]
 ) else (
 call :dk_color %Red% "%keyecho% %~1 [Failed] %keyerror%"
 if not defined error (
-if defined altapplist call :dk_color %Red% "ID de ativacao nao encontrado para esta Chave."
+if defined altapplist call :dk_color %Red% "Activation ID not found for this key."
 call :dk_color %Blue% "%_fixmsg%"
 set showfix=1
 )
@@ -1237,7 +1311,7 @@ del "!_ttemp!\chklen" %nul%
 
 if !len! GTR 6000 (
 %eline%
-echo [INFO] Se houver muitas licencas instaladas, o ativador podera travar.
+echo Too many licenses are installed, the script may crash.
 call :dk_color %Blue% "%_fixmsg%"
 timeout /t 30
 )
@@ -1339,7 +1413,7 @@ echo sc start %_slser% [Error Code: %spperror%]
 )
 
 echo:
-%psc% "$job = Start-Job { (Get-WmiObject -Query 'SELECT * FROM %sps%').Version }; if (-not (Wait-Job $job -Timeout 30)) {write-host '%_slser% nao esta funcionando corretamente. Acesse a webpage para obter ajuda - %mas%troubleshoot'}"
+%psc% "$job = Start-Job { (Get-WmiObject -Query 'SELECT * FROM %sps%').Version }; if (-not (Wait-Job $job -Timeout 30)) {write-host '%_slser% is not working correctly. Check this webpage for help - %mas%troubleshoot'}"
 exit /b
 
 ::  Get Product name (WMI/REG methods are not reliable in all conditions, hence winbrand.dll method is used)
@@ -1411,11 +1485,11 @@ if not exist %SysPath%\%_slexe% if not exist %SysPath%\alg.exe (set "results=%re
 )
 
 if not "%results%%pupfound%"=="" (
-if defined pupfound call :dk_color %Gray% "Verificando Ativadores PUP                 [Encontrado%pupfound%]"
-if defined results call :dk_color %Red% "Verificando Provavel Infeccao por Mal%w%ware..."
+if defined pupfound call :dk_color %Gray% "Checking PUP Activators                 [Found%pupfound%]"
+if defined results call :dk_color %Red% "Checking Probable Mal%w%ware Infection..."
 if defined results (call :dk_color %Red% "%results%"&set showfix=1)
 set fixes=%fixes% %mas%remove_mal%w%ware
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%remove_mal%w%ware"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%remove_mal%w%ware"
 echo:
 )
 
@@ -1439,8 +1513,8 @@ call :dk_chkmal
 sc query Null %nul% || (
 set error=1
 set showfix=1
-call :dk_color %Red% "Verificando Sandboxing                     [Encontrado, ativador nao esta funcionando corretamente.]"
-call :dk_color %Blue% "Se estiver usando algum antivirus de terceiros, verifique se ele esta bloqueando o ativador."
+call :dk_color %Red% "Checking Sandboxing                     [Found, script may not work properly.]"
+call :dk_color %Blue% "If you are using any third-party antivirus, check if it is blocking the script."
 echo:
 )
 
@@ -1464,7 +1538,7 @@ if defined _corrupt (if defined serv_cor (set "serv_cor=!serv_cor! %%#") else (s
 if defined serv_cor (
 set error=1
 set showfix=1
-call :dk_color %Red% "Verificando Servicos Corrompidos               [%serv_cor%]"
+call :dk_color %Red% "Checking Corrupt Services               [%serv_cor%]"
 )
 
 ::========================================================================================================================================
@@ -1499,11 +1573,11 @@ if defined serv_cste (set "serv_cste=!serv_cste! %%#") else (set "serv_cste=%%#"
 )
 )
 
-if defined serv_csts call :dk_color %Gray% "Habilitando Desabilitando Servicos              [Sucesso] [%serv_csts%]"
+if defined serv_csts call :dk_color %Gray% "Enabling Disabled Services              [Successful] [%serv_csts%]"
 
 if defined serv_cste (
 set error=1
-call :dk_color %Red% "Habilitando Desabilitando Servicos            [Falha] [%serv_cste%]"
+call :dk_color %Red% "Enabling Disabled Services              [Failed] [%serv_cste%]"
 )
 
 ::========================================================================================================================================
@@ -1529,14 +1603,14 @@ if defined checkerror if defined serv_e (set "serv_e=!serv_e!, %%#-!errorcode!")
 
 if defined serv_e (
 set error=1
-call :dk_color %Red% "Iniciando Servicos                      [Falha] [%serv_e%]"
+call :dk_color %Red% "Starting Services                       [Failed] [%serv_e%]"
 echo %serv_e% | findstr /i "ClipSVC-1058 sppsvc-1058" %nul% && (
-call :dk_color %Blue% "Reinicie sua maquina usando a opcao de reinicializacao para corrigir este erro."
+call :dk_color %Blue% "Reboot your machine using the restart option to fix this error."
 set showfix=1
 )
 echo %serv_e% | findstr /i "sppsvc-1060" %nul% && (
 set fixes=%fixes% %mas%fix_service
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%fix_service"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%fix_service"
 set showfix=1
 )
 )
@@ -1548,7 +1622,7 @@ set showfix=1
 if defined safeboot_option (
 set error=1
 set showfix=1
-call :dk_color2 %Red% "Verificando Boot Mode                      [%safeboot_option%] " %Blue% "[Modo de seguranca encontrado. Execute no modo normal.]"
+call :dk_color2 %Red% "Checking Boot Mode                      [%safeboot_option%] " %Blue% "[Safe mode found. Run in normal mode.]"
 )
 
 
@@ -1561,11 +1635,11 @@ call :dk_color %Gray% "Checking Windows Setup State            [%imagestate%]"
 echo "%imagestate%" | find /i "RESEAL" %nul% && (
 set error=1
 set showfix=1
-call :dk_color %Blue% "Voce precisa executa-lo no modo normal caso esteja executando-o no Modo de Auditoria."
+call :dk_color %Blue% "You need to run it in normal mode in case you are running it in Audit Mode."
 )
 echo "%imagestate%" | find /i "UNDEPLOYABLE" %nul% && (
 set fixes=%fixes% %mas%in-place_repair_upgrade
-call :dk_color2 %Blue% "Se a ativacao falhar, faca isso- " %_Yellow% " %mas%in-place_repair_upgrade"
+call :dk_color2 %Blue% "If the activation fails, do this - " %_Yellow% " %mas%in-place_repair_upgrade"
 )
 )
 
@@ -1573,7 +1647,7 @@ call :dk_color2 %Blue% "Se a ativacao falhar, faca isso- " %_Yellow% " %mas%in-p
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinPE" /v InstRoot %nul% && (
 set error=1
 set showfix=1
-call :dk_color2 %Red% "Verificando Boot WinPE                          " %Blue% "[Modo WinPE encontrado. Execute no modo normal.]"
+call :dk_color2 %Red% "Checking WinPE                          " %Blue% "[WinPE mode found. Run in normal mode.]"
 )
 
 
@@ -1583,9 +1657,9 @@ for /f "delims=" %%a in ('%psc% "$f=[io.file]::ReadAllText('!_batp!') -split ':w
 echo "%wpainfo%" | find /i "Error Found" %nul% && (
 set error=1
 set wpaerror=1
-call :dk_color %Red% "Verificando Erros de Registros WPA            [%wpainfo%]"
+call :dk_color %Red% "Checking WPA Registry Errors            [%wpainfo%]"
 ) || (
-echo Verificando Contador de Registro WPA             [%wpainfo%]
+echo Checking WPA Registry Count             [%wpainfo%]
 )
 
 
@@ -1593,7 +1667,7 @@ if not defined notwinact if exist "%SystemRoot%\Servicing\Packages\Microsoft-Win
 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion" /v EditionID %nul2% | find /i "Eval" %nul1% || (
 call :dk_color %Red% "Checking Eval Packages                  [Non-Eval Licenses are installed in Eval Windows]"
 set fixes=%fixes% %mas%evaluation_editions
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%evaluation_editions"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%evaluation_editions"
 )
 )
 
@@ -1651,7 +1725,7 @@ echo "%error_code%" | findstr /i "0x800410 0x800440 0x80131501" %nul1% && set wm
 if defined wmifailed (
 set error=1
 call :dk_color %Red% "Checking WMI                            [Not Working]"
-if not defined showfix call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcaoo Corrigir WMI."
+if not defined showfix call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run Fix WMI option."
 set showfix=1
 )
 
@@ -1689,16 +1763,16 @@ call :dk_color2 %Red% "Checking ClipSVC                        " %Blue% "[System
 ::  This "WLMS" service was included in previous Eval editions (which were activable) to automatically shut down the system every hour after the evaluation period expired and prevent SPPSVC from stopping.
 
 if exist "%SysPath%\wlms\wlms.exe" (
-echo Verificando o serviço Eval WLMS              [Encontrado]
+echo Checking Eval WLMS Service              [Found]
 )
 
 
 reg query "HKU\S-1-5-20\Software\Microsoft\Windows NT\CurrentVersion" %nul% || (
 set error=1
 set showfix=1
-call :dk_color %Red% "Verificando Registro HKU\S-1-5-20          [Nao encontrado]"
+call :dk_color %Red% "Checking HKU\S-1-5-20 Registry          [Not Found]"
 set fixes=%fixes% %mas%in-place_repair_upgrade
-call :dk_color2 %Blue% "Em caso de problemas de ativacao, faca isso - " %_Yellow% " %mas%in-place_repair_upgrade"
+call :dk_color2 %Blue% "In case of activation issues, do this - " %_Yellow% " %mas%in-place_repair_upgrade"
 )
 
 
@@ -1726,7 +1800,7 @@ call :dk_color %Red% "Checking SkipRearm                      [Default 0 Value N
 if %winbuild% GEQ 7600 reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform\Plugins\Objects\msft:rm/algorithm/hwid/4.0" /f ba02fed39662 /d %nul% || (
 call :dk_color %Red% "Checking SPP Registry Key               [Incorrect ModuleId Found]"
 set fixes=%fixes% %mas%issues_due_to_gaming_spoofers
-call :dk_color2 %Blue% "Most likely caused by gaming spoofers. Acesse a webpage para obter ajuda - " %_Yellow% " %mas%issues_due_to_gaming_spoofers"
+call :dk_color2 %Blue% "Most likely caused by gaming spoofers. Check this webpage for help - " %_Yellow% " %mas%issues_due_to_gaming_spoofers"
 set error=1
 set showfix=1
 )
@@ -1742,7 +1816,7 @@ set error=1
 set showfix=1
 call :dk_color %Red% "Checking TokenStore Registry Key        [Correct Path Not Found] [!tokenstore!]"
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 )
 
@@ -1846,7 +1920,7 @@ set showfix=1
 ::  If required services are not disabled or corrupted + if there is any error + SoftwareLicensingService errorlevel is not Zero + no fix was shown before
 
 if not defined serv_cor if not defined serv_cste if defined error if /i not %error_code%==0 if not defined showfix (
-if not defined permerror if defined wpaerror (call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcao Corrigir registro WPA." & set showfix=1)
+if not defined permerror if defined wpaerror (call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run Fix WPA Registry option." & set showfix=1)
 if not defined showfix (
 set showfix=1
 call :dk_color %Blue% "%_fixmsg%"
@@ -1953,10 +2027,10 @@ if !errorlevel!==1 (start %selfgit% & start %github% & for %%# in (%fixes%) do (
 )
 
 if defined terminal (
-call :dk_color %_Yellow% "Pressione [0] para %_exitmsg%..."
+call :dk_color %_Yellow% "Press [0] key to %_exitmsg%..."
 choice /c 0 /n
 ) else (
-call :dk_color %_Yellow% "Pressione qualquer tecla para %_exitmsg%..."
+call :dk_color %_Yellow% "Press any key to %_exitmsg%..."
 pause %nul1%
 )
 
@@ -2094,7 +2168,7 @@ set _rem=0
 
 cls
 color 07
-title  Ativacao Ohook %masver%
+title  Ohook Activation %masver%
 
 set _args=
 set _elev=
@@ -2121,30 +2195,30 @@ if %_rem%==1 goto :oh_uninstall
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 25
-title  Ativacao Ohook %masver%
+title  Ohook Activation %masver%
 call :oh_checkapps
 echo:
 echo:
 echo:
 echo:
-if defined checknames (call :dk_color %_Yellow% "                Fechar [!checknames!] antes de prosseguir...")
+if defined checknames (call :dk_color %_Yellow% "                Close [!checknames!] before proceeding...")
 echo         ____________________________________________________________
 echo:
-echo                 [1] Instalar Ativacao Office Ohook 
+echo                 [1] Install Ohook Office Activation
 echo:
-echo                 [2] Desinstalar Ohook
+echo                 [2] Uninstall Ohook
 echo                 ____________________________________________
 echo:
-echo                 [3] Baixar Office's
+echo                 [3] Download Office
 echo:
 echo                 [0] %_exitmsg%
 echo         ____________________________________________________________
 echo: 
-call :dk_color2 %_White% "                 " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3,0] :"
+call :dk_color2 %_White% "             " %_Green% "Choose a menu option using your keyboard [1,2,3,0]"
 choice /C:1230 /N
 set _el=!errorlevel!
 if !_el!==4  exit /b
-if !_el!==3  start %mas%genuine-installation-media#download-office &goto :oh_menu
+if !_el!==3  start %mas%genuine-installation-media &goto :oh_menu
 if !_el!==2  goto :oh_uninstall
 if !_el!==1  goto :oh_menu2
 goto :oh_menu
@@ -2160,23 +2234,22 @@ mode 140, 32
 if exist "%SysPath%\spp\store_test\" mode 140, 32
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=32;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  Ativacao Ohook %masver%
+title  Ohook Activation %masver%
 
 echo:
-echo Inicializando...
+echo Initializing...
 call :dk_chkmal
 
 if not exist %SysPath%\%_slexe% (
 %eline%
-echo [%SysPath%\%_slexe%] arquivo faltando, abortando...
+echo [%SysPath%\%_slexe%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute DIS
-Opcoes de restauracao M e verificacao SFC."
-call :dk_color %Blue% "Apos isso, reinicie o sistema e tente ativar novamente."
+call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Restore and SFC Scan options."
+call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse esta webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 goto dk_done
 )
@@ -2476,7 +2549,7 @@ call :dk_color %Red% "Some errors were detected."
 if not defined ierror if not defined showfix if not defined serv_cor if not defined serv_cste call :dk_color %Blue% "%_fixmsg%"
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 goto :dk_done
@@ -2487,7 +2560,7 @@ goto :dk_done
 
 cls
 if not defined terminal mode 145, 32
-title  Desinstalar Ativacao Ohook %masver%
+title  Uninstall Ohook Activation %masver%
 
 set _present=
 set _unerror=
@@ -2495,7 +2568,7 @@ call :oh_reset
 call :oh_getpath
 
 echo:
-echo Desinstalando Ativacao Ohook...
+echo Uninstalling Ohook activation...
 echo:
 
 if defined o16c2r_reg (for /f "skip=2 tokens=2*" %%a in ('"reg query %o16c2r_reg% /v InstallPath" %nul6%') do (set "_16CHook=%%b\root\vfs"))
@@ -2597,10 +2670,10 @@ echo ___________________________________________________________________________
 echo:
 
 if not defined _present (
-echo Ativacao Ohook nao esta instalada.
+echo Ohook activation is not installed.
 ) else (
 if defined _unerror (
-call :dk_color %Red% " Falha ao desinstalar ativacao Ohook."
+call :dk_color %Red% "Failed to uninstall Ohook activation."
 call :oh_checkapps
 if defined checknames (
 call :dk_color %Blue% "Close [!checknames!] and try again."
@@ -3939,7 +4012,7 @@ set "_debug=0"
 cls
 color 07
 set KS=K%blank%MS
-title  Ativacao TSforge %masver%
+title  TSforge Activation %masver%
 
 set _args=
 set _elev=
@@ -3971,8 +4044,8 @@ if /i not %_actmethod%==Auto set _unattended=1
 if %winbuild% LSS 7600 (
 reg query "HKLM\SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" /v Install %nul2% | find /i "0x1" %nul1% || (
 %eline%
-echo .NET 3.5 Framework nao esta instalado em seu sistema.
-echo Instale-o usando o seguinte URL abaixo:
+echo .NET 3.5 Framework is not installed in your system.
+echo Install it using the following URL.
 echo:
 echo https://www.microsoft.com/en-us/download/details.aspx?id=25150
 if %_unattended%==0 start https://www.microsoft.com/en-us/download/details.aspx?id=25150
@@ -3987,40 +4060,40 @@ goto dk_done
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 33
-title  Ativacao TSforge %masver%
+title  TSforge Activation %masver%
 
 echo:
 echo:
 echo:
 echo        ______________________________________________________________
 echo: 
-echo               [1] Ativar - Windows
-echo               [2] Ativar - ESU
-echo               [3] Ativar - Office [Todos]
-echo               [4] Ativar - Office [Project/Visio]
-echo               [5] Ativar - Todos
+echo               [1] Activate - Windows
+echo               [2] Activate - ESU
+echo               [3] Activate - Office [All]
+echo               [4] Activate - Office [Project/Visio]
+echo               [5] Activate - All
 echo               _______________________________________________  
 echo: 
-echo                   Opcoes Avancadas:
+echo                   Advanced Options:
 echo:
-echo               [A] Ativar - Windows %KS% Host
-echo               [B] Ativar - Office %KS% Host
-echo               [C] Ativar - Windows 8/8.1 APPX Sideloading
-echo               [D] Ativar - Selecionar produtos manualmente
+echo               [A] Activate - Windows %KS% Host
+echo               [B] Activate - Office %KS% Host
+echo               [C] Activate - Windows 8/8.1 APPX Sideloading
+echo               [D] Activate - Manually Select Products
 if defined _vis (
-echo               [E] Resetar - Rearm/Timers
+echo               [E] Reset    - Rearm/Timers
 ) else (
-echo               [E] Resetar - Rearm/Timers/Tamper/Lock
+echo               [E] Reset    - Rearm/Timers/Tamper/Lock
 )
-echo               [F] Alterar - Metodo de Ativacao [%_actmethod%]
+echo               [F] Change   - Activation Method [%_actmethod%]
 echo               _______________________________________________       
 echo:
-echo               [6] Remover Ativacao TSforge
-echo               [7] Baixar Office's
+echo               [6] Remove TSforge Activation
+echo               [7] Download Office
 echo               [0] %_exitmsg%
 echo        ______________________________________________________________
 echo:
-call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...A,F,0] :"
+call :dk_color2 %_White% "            " %_Green% "Choose a menu option using your keyboard..."
 choice /C:12345ABCDEF670 /N
 set _el=!errorlevel!
 
@@ -4061,26 +4134,26 @@ echo                  Builds ^<  19041 - ZeroCID
 echo              __________________________________________________
 echo: 
 echo              [2] StaticCID
-echo                  Requer Internet
-echo                  Nao compativel com o Windows 7 ou anteriores
+echo                  Needs Internet
+echo                  Not for Windows 7 or older
 echo              __________________________________________________
 echo:
 echo              [3] ZeroCID
-echo                  Funciona perfeitamente em builds anteriores a 19041
-echo                  Pode apresentar falhas em builds entre 19041 e 26100
-echo                  Nao funciona em builds acima de 26100.4188
+echo                  Works reliably on builds below 19041
+echo                  May break on builds between 19041-26100
+echo                  Does not work on builds above 26100.4188
 echo              __________________________________________________
 echo:
 echo              [4] KMS4k
-echo                  Apenas para licencas por volume
-echo                  Ativa por mais de 4.000 anos
+echo                  Volume licenses only
+echo                  Activates for 4000+ years
 echo              __________________________________________________
 echo:
-echo              [5] Saiba mais
+echo              [5] Learn More
 echo              [0] %_exitmsg%
 echo        ______________________________________________________________
 echo:
-call :dk_color2 %_White% "            " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3,4,5,0] :"
+call :dk_color2 %_White% "            " %_Green% "Choose a menu option using your keyboard..."
 choice /C:123450 /N
 set _el=!errorlevel!
 
@@ -4104,10 +4177,10 @@ mode 125, %height%
 if exist "%SysPath%\spp\store_test\" mode 134, %height%
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=%height%;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  Ativacao TSforge %masver%
+title  TSforge Activation %masver%
 
 echo:
-echo Inicializando...
+echo Initializing...
 call :dk_chkmal
 
 if not exist %SysPath%\%_slexe% (
@@ -4115,11 +4188,11 @@ if not exist %SysPath%\%_slexe% (
 echo [%SysPath%\%_slexe%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
-call :dk_color %Blue% "Apos isso, reinicie o sistema e tente ativar novamente."
+call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Restore and SFC Scan options."
+call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 goto dk_done
 )
@@ -4133,7 +4206,7 @@ echo Install .NET Framework 4.8 and Windows Management Framework 5.1
 )
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 )
@@ -4147,7 +4220,7 @@ echo Evaluation WLMS service is running, %_slser% service can not be stopped. Ab
 echo Install Non-Eval version for Windows build %winbuild%.
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 )
@@ -4238,7 +4311,7 @@ call :ts_getedition
 if not defined tsedition (
 call :dk_color %Red% "Checking Windows Edition ID             [Not found in installed licenses, aborting...]"
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :dk_done
 )
 
@@ -4461,7 +4534,7 @@ call :dk_color %Blue% "%_fixmsg%"
 goto :ts_esu
 )
 
-echo Verufucando ID de Ativacao                  [%tempid%] [%tsedition%]
+echo Checking Activation ID                  [%tempid%] [%tsedition%]
 
 set generickey=1
 call :dk_inskey "[%key%]"
@@ -4472,7 +4545,7 @@ goto :ts_esu
 
 :ts_wineval
 
-call :dk_color %Gray% "Verificando Edicao do Sistema                     [%tsedition%] [Evaluation edition found]"
+call :dk_color %Gray% "Checking OS Edition                     [%tsedition%] [Evaluation edition found]"
 call :dk_color %Blue% "Evaluation editions cannot be activated outside of evaluation period."
 
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" (
@@ -4709,7 +4782,7 @@ if %winbuild% EQU 9600 set esuavail=1
 if defined esuavail (
 call :dk_color %Red% "Checking Activation ID                  [ESU license is not found, make sure Windows is fully updated]"
 set fixes=%fixes% %mas%tsforge#windows-esu
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%tsforge#windows-esu"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%tsforge#windows-esu"
 ) else (
 call :dk_color %Gray% "Checking Activation ID                  [ESU is not available for %winos%]"
 )
@@ -4809,22 +4882,22 @@ set error=1
 set showfix=1
 echo:
 if not "%o14msi%%o14c2r%"=="" (
-call :dk_color %Red% "Verificando suporte a instalacao do Office...       [Nao Encontrado]"
+call :dk_color %Red% "Checking Supported Office Install       [Not Found]"
 ) else (
 if %_actwin%==0 (
-call :dk_color %Red% "Verificando Office instalado...               [Nao Encontrado]"
+call :dk_color %Red% "Checking Installed Office               [Not Found]"
 ) else (
-call :dk_color %Gray% "Verificando Office instalado...               [Nao Encontrado]"
+call :dk_color %Gray% "Checking Installed Office               [Not Found]"
 )
 )
 
 if defined ohub (
 echo:
-echo Você so tem apenas o aplicativo Painel do Office instalado. Você precisa instalar a versao completa do Office.
+echo You only have the Office Dashboard app installed. You need to install the full version of Office.
 )
-call :dk_color %Blue% "Baixe e instale o Office a partir da URL abaixo e tente novamente."
-if %_actwin%==0 set fixes=%fixes% %mas%genuine-installation-media#download-office
-call :dk_color %_Yellow% "%mas%genuine-installation-media#download-office"
+call :dk_color %Blue% "Download and install Office from below URL and try again."
+if %_actwin%==0 set fixes=%fixes% %mas%genuine-installation-media
+call :dk_color %_Yellow% "%mas%genuine-installation-media"
 goto :ts_act
 )
 
@@ -4834,7 +4907,7 @@ if not "%o14c2r%%o14msi%"=="" set multioffice=1
 
 if defined multioffice (
 echo:
-call :dk_color %Gray% "Verificando Multiplos Office's instalados...        [Encontrados. Recomendada a instalacao de apenas uma versao]"
+call :dk_color %Gray% "Checking Multiple Office Install        [Found. Recommended to install one version only]"
 )
 
 ::========================================================================================================================================
@@ -5058,17 +5131,17 @@ echo "%%a" | findstr /r ".*-.*-.*-.*-.*" %nul1% && (set tsids=!tsids! %%a& set t
 )
 
 if defined tempid (
-echo Veirifcando ID de Ativacao                  [%tempid%] [%tsedition%]
+echo Checking Activation ID                  [%tempid%] [%tsedition%]
 ) else (
-call :dk_color %Red% "Veirifcando ID de Ativacao                  [Nao encontrado] [%tsedition%] [%osSKU%]"
-call :dk_color %Blue% "%KS% A licenca do host nao foi encontrada no seu sistema. Ela esta disponivel para as edições abaixo:"
+call :dk_color %Red% "Checking Activation ID                  [Not Found] [%tsedition%] [%osSKU%]"
+call :dk_color %Blue% "%KS% Host license is not found on your system. It is available for the below editions."
 call :dk_color %Blue% "Professional, Education, ProfessionalWorkstation, Enterprise, EnterpriseS, and Server editions, etc."
 goto :ts_act
 )
 
 if defined winsub (
 echo:
-call :dk_color %Blue% "Assinatura do Windows [SKU ID-%slcSKU%] encontrada. O ativador ativara a edicao base [SKU ID-%regSKU%]."
+call :dk_color %Blue% "Windows Subscription [SKU ID-%slcSKU%] found. Script will activate base edition [SKU ID-%regSKU%]."
 )
 
 goto :ts_act
@@ -5171,7 +5244,7 @@ echo Checking Activation ID                  [%%A] [%%B]
 
 if not defined ohostexist (
 call :dk_color %Gray% "Checking Activation ID                  [Not found for Office %KS% Host]"
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%tsforge#office-kms-host"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%tsforge#office-kms-host"
 )
 
 echo:
@@ -5252,7 +5325,7 @@ set resetstuff=1
 if %errorlevel%==3 (
 call :dk_color %Red% "Reset Failed."
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 ) else (
 call :dk_color %Green% "Reset process has been successfully done."
 )
@@ -5431,7 +5504,7 @@ call :dk_color %Gray% "To activate, check your internet connection and ensure th
 call :dk_color %Blue% "This Windows version is known to not activate due to MS Windows/Server issues."
 )
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 )
 
@@ -5448,7 +5521,7 @@ echo:
 if !errorlevel!==3 (
 if %_actman%==0 (if not defined error call :dk_color %Blue% "%_fixmsg%")
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 ) else (
 echo "%tsids%" | find /i "7e94be23-b161-4956-a682-146ab291774c" %nul1% && (
 call :dk_color %Gray% "Windows Update can receive 1-3 years of ESU. 4-6 years ESU is not officially supported, but you can manually install updates."
@@ -5476,7 +5549,7 @@ call :dk_reeval %nul%
 
 if not defined tsids if defined error if not defined showfix (
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 goto :dk_done
@@ -5489,16 +5562,17 @@ cls
 if not defined terminal (
 mode 100, 30
 )
-title  Remover Ativacao TSforge %masver%
+title  Remove TSforge Activation %masver%
 
 echo:
-echo A ativacao do TSforge nao modifica nenhum componente do Windows e nao instala nenhum arquivo novo.
+echo TSforge activation doesn't modify any Windows components and doesn't install any new files.
 echo:
-echo Em vez disso, ele anexa dados a um dos arquivos de dados usados pela Plataforma de Proteção de Software.
+echo Instead, it appends data to one of data files used by Software Protection Platform.
 echo:
-call :dk_color %Gray% "Se voce quiser redefinir o status de ativação,"
+call :dk_color %Gray% "If you want to reset the activation status,"
 call :dk_color %Blue% "%_fixmsg%"
 echo:
+
 goto :dk_done
 
 ::========================================================================================================================================
@@ -5649,7 +5723,7 @@ call :dk_color %Red% "Checking Activation ID                  [Office %oVer%.0 !
 set error=1
 set showfix=1
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 echo %%# | find /i "2024" %nul% && (
@@ -11607,7 +11681,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  Ativacao KMS38 %masver%
+title  KMS38 Activation %masver%
 
 set _args=
 set _elev=
@@ -11634,13 +11708,13 @@ set "specific_kms=SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectio
 
 if %winbuild% LSS 14393 (
 %eline%
-echo Versao do sistema operacional nao suportada detectada [%winbuild%].
-echo KMS38 a ativacao so e suportada no Windows 10/11/Server, build 14393 ou posterior.
+echo Unsupported OS version detected [%winbuild%].
+echo KMS38 activation is only supported on Windows 10/11/Server, build 14393 and later.
 echo:
 if %winbuild% LSS 10240 (
-call :dk_color %Blue% "Use a opcao de ativacao do TSforge no Menu Principal."
+call :dk_color %Blue% "Use TSforge activation option from the main menu."
 ) else (
-call :dk_color %Blue% "Use a opcao de ativacao HWID no Menu Principal."
+call :dk_color %Blue% "Use HWID activation option from the main menu."
 )
 goto dk_done
 )
@@ -11654,7 +11728,7 @@ if %_rem%==1 goto :k_uninstall
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 25
-title  Ativacao KMS38 %masver%
+title  KMS38 Activation %masver%
 
 echo:
 echo:
@@ -11662,15 +11736,15 @@ echo:
 echo:
 echo:           ______________________________________________________
 echo:
-echo                 [1] Ativacao KMS38
+echo                 [1] KMS38 Activation
 echo                 ____________________________________________
 echo:
-echo                 [2] Remover Protecao KM38
+echo                 [2] Remove KM38 Protection
 echo:
 echo                 [0] %_exitmsg%
 echo:           ______________________________________________________
 echo: 
-call :dk_color2 %_White% "                  " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,0] :"
+call :dk_color2 %_White% "              " %_Green% "Choose a menu option using your keyboard [1,2,0]"
 choice /C:120 /N
 set _el=!errorlevel!
 if !_el!==3  exit /b
@@ -11688,10 +11762,10 @@ if not defined terminal (
 mode 110, 34
 if exist "%SysPath%\spp\store_test\" mode 134, 34
 )
-title  Ativacao KMS38 %masver%
+title  KMS38 Activation %masver%
 
 echo:
-echo Inicializando...
+echo Initializing...
 call :dk_chkmal
 
 if exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*CorEdition~*.mum" if not exist "%SysPath%\clipup.exe" set a_cor=1
@@ -11700,14 +11774,14 @@ if not exist %SysPath%\ClipUp.exe if not defined a_cor (set _fmiss=%_fmiss%ClipU
 
 if defined _fmiss (
 %eline%
-echo [%_fmiss%] arquivo faltando, abortando...
+echo [%_fmiss%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes de Restauracao do DISM e Verificacao SFC."
+call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Restore and SFC Scan options."
 call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 goto dk_done
 )
@@ -11731,12 +11805,12 @@ if defined _perm (
 cls
 echo ___________________________________________________________________________________________
 echo:
-call :dk_color2 %_White% "     " %Green% "%winos% ja esta permanentemente ativado."
-call :dk_color2 %_White% "     " %Gray% "A ativacao nao e necessaria."
+call :dk_color2 %_White% "     " %Green% "%winos% is already permanently activated."
+call :dk_color2 %_White% "     " %Gray% "Activation is not required."
 echo ___________________________________________________________________________________________
 if %_unattended%==1 goto dk_done
 echo:
-choice /C:10 /N /M ">    [1] Ativar mesmo assim [0] %_exitmsg% : "
+choice /C:10 /N /M ">    [1] Activate Anyway [0] %_exitmsg% : "
 if errorlevel 2 exit /b
 )
 cls
@@ -11765,7 +11839,7 @@ echo Evaluation editions cannot be activated outside of their evaluation period.
 call :dk_color %Blue% "Use TSforge activation option from the main menu to reset evaluation period."
 echo:
 set fixes=%fixes% %mas%evaluation_editions
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%evaluation_editions"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%evaluation_editions"
 )
 goto dk_done
 )
@@ -11781,7 +11855,7 @@ if not exist "!_work!\clipup.exe" (
 echo clipup.exe doesn't exist in Server Cor/Acor [No GUI] versions.
 echo The file is required for KMS38 activation.
 echo Check the below page for instructions on how to activate it.
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%kms38"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%kms38"
 goto dk_done
 )
 )
@@ -11793,7 +11867,7 @@ if defined a_cor (
 if !errorlevel!==3 (
 %eline%
 echo Valid digital signature not found in clipup.exe file.
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 )
@@ -11861,13 +11935,13 @@ if exist "%SysPath%\spp\tokens\skus\%osedition%\*GVLK*.xrm-ms" set sppks=1
 if defined skunotfound (
 call :dk_color %Red% "Required license files not found in %SysPath%\spp\tokens\skus\"
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 if defined sppks (
 call :dk_color %Red% "KMS38 activation is supported but failed to find the key."
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 if not defined skunotfound if not defined sppks (
@@ -11918,7 +11992,7 @@ if %_wmic% EQU 0 for /f "tokens=2 delims==" %%a in ('%psc% "(([WMISEARCHER]'SELE
 if not defined app (
 call :dk_color %Red% "Checking Installed GVLK Activation ID   [Not Found] Aborting..."
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :dk_done
 )
 
@@ -12080,7 +12154,7 @@ goto :k_final
 call :dk_color %Red% "Activation Failed"
 if not defined error call :dk_color %Blue% "%_fixmsg%"
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 
 ::========================================================================================================================================
 
@@ -12140,7 +12214,7 @@ goto :dk_done
 
 cls
 if not defined terminal mode 99, 28
-title  Remover Protecao KMS38 %masver%
+title  Remove KMS38 Protection %masver%
 
 %nul% reg delete "HKLM\%specific_kms%" /f
 %nul% reg delete "HKU\S-1-5-20\%specific_kms%" /f
@@ -12152,9 +12226,9 @@ title  Remover Protecao KMS38 %masver%
 
 echo:
 %nul% reg query "HKLM\%specific_kms%" && (
-call :dk_color %Red% "Removendo Especifico KMS Host              [Falha]"
+call :dk_color %Red% "Removing Specific KMS Host              [Failed]"
 ) || (
-echo Removendo Especifico KMS Host              [Sucesso]
+echo Removing Specific KMS Host              [Successful]
 )
 
 goto :dk_done
@@ -12421,7 +12495,7 @@ set _port=
 cls
 color 07
 set KS=K%blank%MS
-title  Ativacao Online %KS% %masver%
+title  Online %KS% Activation %masver%
 
 set _args=
 set _elev=
@@ -12456,7 +12530,7 @@ if not defined _server set _port=
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 30
-title  Ativacao Online %KS% %masver%
+title  Online %KS% Activation %masver%
 
 echo:
 echo:
@@ -12464,40 +12538,40 @@ echo:
 echo:
 if exist "%ProgramFiles%\Activation-Renewal\Activation_task.cmd" (
 find /i "Ver:2.7" "%ProgramFiles%\Activation-Renewal\Activation_task.cmd" %nul% || (
-call :dk_color %_Yellow% "              Tarefa de renovacao antiga encontrada. Execute a ativacao para atualiza-la."
+call :dk_color %_Yellow% "              Old renewal task found, run activation to update it."
 )
 )
 echo        ______________________________________________________________
 echo: 
-echo               [1] Ativar - Windows
-echo               [2] Ativar - Office [Todos]
-echo               [3] Ativar - Office [Project/Visio]
-echo               [4] Ativar - Todos
+echo               [1] Activate - Windows
+echo               [2] Activate - Office [All]
+echo               [3] Activate - Office [Project/Visio]
+echo               [4] Activate - All
 echo               _______________________________________________  
 echo: 
 if %_norentsk%==0 (
-echo               [5] Tarefa de Renovacao com Ativacao       [Ok]
+echo               [5] Renewal Task With Activation       [Yes]
 ) else (
-call :dk_color2 %_White% "              [5] Tarefa de Renovacao com Ativacao        " %_Yellow% "[No]"
+call :dk_color2 %_White% "              [5] Renewal Task With Activation        " %_Yellow% "[No]"
 )
 if %_NoEditionChange%==0 (
-echo               [6] Alterar edicao se necessario           [Ok]
+echo               [6] Change Edition If Needed           [Yes]
 ) else (
-call :dk_color2 %_White% "              [6] Alterar edicao se necessario            " %_Yellow% "[No]"
+call :dk_color2 %_White% "              [6] Change Edition If Needed            " %_Yellow% "[No]"
 )
-echo               [7] Desinstalacao Online %KS%
+echo               [7] Uninstall Online %KS%
 echo               _______________________________________________       
 echo:
 if defined _server (
-echo               [8] Definir %KS% Server/Port [%_server%] [%_port%]
+echo               [8] Set %KS% Server/Port [%_server%] [%_port%]
 ) else (
-echo               [8] Definir %KS% Server/Port
+echo               [8] Set %KS% Server/Port
 )
-echo               [9] Baixar Office's
+echo               [9] Download Office
 echo               [0] %_exitmsg%
 echo        ______________________________________________________________
 echo:
-call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...8,9,0] :"
+call :dk_color2 %_White% "       " %_Green% "Choose a menu option using your keyboard [1,2,3,4,5,6,7,8,9,0]"
 choice /C:1234567890 /N
 set _el=!errorlevel!
 
@@ -12524,10 +12598,10 @@ mode 115, 32
 if exist "%SysPath%\spp\store_test\" mode 135, 32
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=32;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  Ativacao Online %KS% %masver%
+title  Online %KS% Activation %masver%
 
 echo:
-echo Inicializando...
+echo Initializing...
 call :dk_chkmal
 
 if not exist %SysPath%\%_slexe% (
@@ -12535,11 +12609,11 @@ if not exist %SysPath%\%_slexe% (
 echo [%SysPath%\%_slexe%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
-call :dk_color %Blue% "Apos isto, reinicie o sistema e tente ativar novamente."
+call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Restore and SFC Scan options."
+call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 goto dk_done
 )
@@ -12578,16 +12652,16 @@ if !errorlevel!==0 (set _int=1&set ping_f= But Ping Failed)
 )
 
 if defined _int (
-echo Verificando Conexao de Internet            [Conectado%ping_f%]
+echo Checking Internet Connection            [Connected%ping_f%]
 ) else (
 set error=1
-call :dk_color %Red% "Verificando Conexao de Internet            [Desconectado]"
-call :dk_color %Blue% "A Internet e necessaria para a ativacao online do %KS%."
+call :dk_color %Red% "Checking Internet Connection            [Not Connected]"
+call :dk_color %Blue% "Internet is required for Online %KS% Activation."
 )
 
 ::========================================================================================================================================
 
-echo Iniciando Teste de Diagnostico...
+echo Initiating Diagnostic Tests...
 
 set "_serv=%_slser% Winmgmt"
 
@@ -12608,10 +12682,10 @@ if not %_actwin%==1 goto :ks_office
 ::  Check if system is permanently activated or not
 
 echo:
-echo Processando o Windows...
+echo Processing Windows...
 call :dk_checkperm
 if defined _perm (
-call :dk_color %Gray% "Verificando Ativacao do Sistema                  [O Windows esta ativado permanentemente]"
+call :dk_color %Gray% "Checking OS Activation                  [Windows is already permanently activated]"
 goto :ks_office
 )
 
@@ -12633,7 +12707,7 @@ call :dk_color %Blue% "Go back to main menu and use [Change Edition] option."
 ) else (
 call :dk_color %Blue% "Use TSforge activation option from the main menu to reset evaluation period."
 set fixes=%fixes% %mas%evaluation_editions
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%evaluation_editions"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%evaluation_editions"
 )
 
 goto :ks_office
@@ -12685,13 +12759,13 @@ if %winbuild% LSS 7600 if exist "%SysPath%\licensing\skus\Security-Licensing-SLC
 if defined skunotfound (
 call :dk_color %Red% "Required license files not found."
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 if defined sppks (
 call :dk_color %Red% "%KS% activation is supported but failed to find the %KS% key."
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 if not defined skunotfound if not defined sppks (
@@ -12755,7 +12829,7 @@ if exist "%%~A\Microsoft %%~G\root\vfs\%%#\sppc*dll" set ohook=1
 
 if defined ohook (
 echo:
-call :dk_color %Gray% "Checking Ohook                          [A ativacao Ohook ja esta instalada para o Office]"
+call :dk_color %Gray% "Checking Ohook                          [Ohook activation is already installed for Office]"
 )
 
 ::  Check unsupported office versions
@@ -13273,7 +13347,7 @@ exit /b
 
 cls
 if not defined terminal mode 91, 30
-title  Desinstalacao Completa Online %KS% %masver%
+title  Online %KS% Complete Uninstall %masver%
 
 set "uline=__________________________________________________________________________________________"
 
@@ -16083,7 +16157,7 @@ function ClcRun
 }
 #endregion
 
-$Host.UI.RawUI.WindowTitle = "Verigicar Status de Ativacao"
+$Host.UI.RawUI.WindowTitle = "Check Activation Status"
 if ($All.IsPresent) {
 	$B=$Host.UI.RawUI.BufferSize;$B.Height=3000;$Host.UI.RawUI.BufferSize=$B;
 	if (!$Pass.IsPresent) {clear;}
@@ -16254,7 +16328,7 @@ set "line=______________________________________________________________________
 :at_menu
 
 cls
-title  Resolver problemas %masver%
+title  Troubleshoot %masver%
 if not defined terminal mode 77, 30
 
 echo:
@@ -16263,21 +16337,21 @@ echo:
 echo:
 echo:       _______________________________________________________________
 echo:                                                   
-call :dk_color2 %_White% "             [1] " %_Green% "Ajuda"
+call :dk_color2 %_White% "             [1] " %_Green% "Help"
 echo:             ___________________________________________________
 echo:                                                                      
 echo:             [2] Dism RestoreHealth
 echo:             [3] SFC Scannow
 echo:                                                                      
-echo:             [4] Corrigir WMI
-echo:             [5] Corrigir Licenciamento
-echo:             [6] Corrigir Registro WPA
+echo:             [4] Fix WMI
+echo:             [5] Fix Licensing
+echo:             [6] Fix WPA Registry
 echo:             ___________________________________________________
 echo:
 echo:             [0] %_exitmsg%
 echo:       _______________________________________________________________
 echo:          
-call :dk_color2 %_White% "                 " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...0] :"
+call :dk_color2 %_White% "            " %_Green% "Choose a menu option using your keyboard :"
 choice /C:1234560 /N
 set _erl=%errorlevel%
 
@@ -16312,9 +16386,9 @@ for /f "delims=[] tokens=2" %%# in ('ping -n 1 %%a') do (if not "%%#"=="" set _i
 
 echo:
 if defined _int (
-echo      Verificando Conexao de Internet  [Conectada]
+echo      Checking Internet Connection  [Connected]
 ) else (
-call :dk_color2 %_White% "     " %Red% "Verificando Conexao de Internet  [Desconectado]"
+call :dk_color2 %_White% "     " %Red% "Checking Internet Connection  [Not connected]"
 )
 
 echo %line%
@@ -17347,7 +17421,7 @@ goto dk_done
 )
 
 echo:
-echo Inicializando...
+echo Initializing...
 echo:
 
 for %%# in (
@@ -17362,7 +17436,7 @@ call :dk_color %Blue% "Go back to Main Menu, select Troubleshoot and run DISM Re
 call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 )
@@ -17534,15 +17608,15 @@ if not defined terminal mode con cols=105 lines=32
 
 if /i "%targetedition%"=="ServerRdsh" (
 echo:
-call :dk_color %Red% "==== Nota ===="
+call :dk_color %Red% "==== Note ===="
 echo:
-echo [INFO] Apos o Edicao ser alterada para "%targetedition%", 
-echo o sistema pode nao conseguir alterar a edicao posteriormente.
+echo Once the edition is changed to "%targetedition%", 
+echo the system may not be able to properly change edition later.
 echo:
-echo [1] Continuar mesmo assim
-echo [0] Voltar ao Menu Principal
+echo [1] Continue Anyway
+echo [0] Go Back
 echo:
-call :dk_color %_Green% "Escolha uma opcao do Menu [1,0] :"
+call :dk_color %_Green% "Choose a menu option using your keyboard [1,0] :"
 choice /C:10 /N
 if !errorlevel!==2 goto cedmenu2
 if !errorlevel!==1 rem
@@ -17578,7 +17652,7 @@ echo [%targetedition% ^| %winbuild%]
 echo Failed to get product key from pkeyhelper.dll.
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
@@ -17633,7 +17707,7 @@ call :dk_color %Gray% "Reboot is required to fully change the edition."
 call :dk_color %Red% "[Unsuccessful] [Error Code: !keyerror!]"
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 )
 
@@ -17676,7 +17750,7 @@ choice /C:01 /N /M "[1] Continue [0] %_exitmsg% : "
 if %errorlevel%==1 exit /b
 
 echo:
-echo Inicializando...
+echo Initializing...
 echo:
 
 call :ced_prep
@@ -17714,7 +17788,7 @@ echo [%targetedition% ^| %winbuild%]
 echo Failed to get product key from pkeyhelper.dll.
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
@@ -17790,7 +17864,7 @@ echo:
 call :dk_color %Blue% "In case there are errors, you should restart the system before trying again."
 echo:
 set fixes=%fixes% %mas%change_edition_issues
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%change_edition_issues"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%change_edition_issues"
 exit /b
 
 ::========================================================================================================================================
@@ -18212,7 +18286,7 @@ goto dk_done
 )
 
 echo:
-echo Inicializando...
+echo Initializing...
 echo:
 
 ::========================================================================================================================================
@@ -18268,8 +18342,8 @@ if not defined o16c2r_reg (
 echo Office C2R 2016 or later is not installed, which is required for this script.
 echo Download and install Office from below URL and try again.
 echo:
-set fixes=%fixes% %mas%genuine-installation-media#download-office
-call :dk_color %_Yellow% "%mas%genuine-installation-media#download-office"
+set fixes=%fixes% %mas%genuine-installation-media
+call :dk_color %_Yellow% "%mas%genuine-installation-media"
 goto dk_done
 )
 
@@ -18286,8 +18360,8 @@ echo Minimum required version is 16.0.9029.2167
 echo Aborting...
 echo:
 call :dk_color %Blue% "Download and install latest Office from below URL and try again."
-set fixes=%fixes% %mas%genuine-installation-media#download-office
-call :dk_color %_Yellow% "%mas%genuine-installation-media#download-office"
+set fixes=%fixes% %mas%genuine-installation-media
+call :dk_color %_Yellow% "%mas%genuine-installation-media"
 goto dk_done
 )
 
@@ -18309,8 +18383,8 @@ if not defined %%A (
 echo Failed to find %%A. Aborting...
 echo:
 call :dk_color %Blue% "Download and install Office from below URL and try again."
-set fixes=%fixes% %mas%genuine-installation-media#download-office
-call :dk_color %_Yellow% "%mas%genuine-installation-media#download-office"
+set fixes=%fixes% %mas%genuine-installation-media
+call :dk_color %_Yellow% "%mas%genuine-installation-media"
 goto dk_done
 )
 )
@@ -18322,7 +18396,7 @@ echo which is not officially supported on your Windows build version %winbuild%.
 echo Aborting...
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
@@ -18336,7 +18410,7 @@ echo Unsupported Office %verchk% is installed on your Windows build version %win
 echo Aborting...
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto dk_done
 )
 
@@ -18354,18 +18428,18 @@ echo:
 echo:
 echo         ____________________________________________________________
 echo:
-echo                 [1] Alterar todas as Edicoes
-echo                 [2] Adicionar Edicao
-echo                 [3] Remover uma Edicao
+echo                 [1] Change all editions
+echo                 [2] Add edition
+echo                 [3] Remove edition
 echo:
-echo                 [4] Add/Remover Apps
+echo                 [4] Add/Remove apps
 echo                 ____________________________________________
 echo:
-echo                 [5] Alterar canal de atualizacao do Office
+echo                 [5] Change Office Update Channel
 echo                 [0] %_exitmsg%
 echo         ____________________________________________________________
 echo: 
-call :dk_color2 %_White% "           " %_Green% "Escolha uma opcao do Menu [1,2,3,4,5,0] :"
+call :dk_color2 %_White% "           " %_Green% "Choose a menu option using your keyboard [1,2,3,4,5,0]"
 choice /C:123450 /N
 set _el=!errorlevel!
 if !_el!==6  exit /b
@@ -18398,7 +18472,7 @@ echo:
 echo:
 echo:
 echo:
-echo               O365/Mondo edicoes com os recursos mais recentes.     
+echo                 O365/Mondo editions have the latest features.     
 echo         ____________________________________________________________
 echo:
 echo                 [1] Office Suites     - Retail
@@ -18407,10 +18481,10 @@ echo                 [3] Office SingleApps - Retail
 echo                 [4] Office SingleApps - Volume
 echo                 ____________________________________________
 echo:
-echo                 [0] Voltar ao Menu Principal
+echo                 [0] Go Back
 echo         ____________________________________________________________
 echo: 
-call :dk_color2 %_White% "            " %_Green% "Escolha uma opcao do Menu [1,2,3,4,0] :"
+call :dk_color2 %_White% "            " %_Green% "Choose a menu option using your keyboard [1,2,3,4,0]"
 choice /C:12340 /N
 set _el=!errorlevel!
 if !_el!==5  goto :oemenu
@@ -18442,7 +18516,7 @@ if not exist %SystemRoot%\Temp\%list%.txt (
 echo Failed to generate available editions list.
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :oe_goback
 )
 
@@ -18507,7 +18581,7 @@ if not exist %SystemRoot%\Temp\getAppIds.txt (
 echo Failed to generate available apps list.
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :oe_goback
 )
 )
@@ -18542,8 +18616,8 @@ if not defined terminal mode 98, 32
 
 %line%
 echo:
-call :dk_color %Gray% "Edicao alvo: %targetedition%"
-call :dk_color %Gray% "Voce pode excluir da instalacao os aplicativos abaixo:"
+call :dk_color %Gray% "Target edition: %targetedition%"
+call :dk_color %Gray% "You can exclude the below apps from installation."
 %line%
 if defined suites echo:
 if defined Access_st     echo [A] Access           : %Access_st%
@@ -18561,11 +18635,11 @@ if defined OneDrive_st   echo [D] OneDrive         : %OneDrive_st%
 if defined Teams_st      echo [T] Teams            : %Teams_st%
 %line%
 echo:
-echo [1] Continuar
-echo [0] Voltar ao Menu Principal
+echo [1] Continue
+echo [0] Go Back
 %line%
 echo:
-call :dk_color %_Green% "Escolha uma opcao do Menu [Ex.: 1,0] :"
+call :dk_color %_Green% "Choose a menu option using your keyboard:"
 choice /C:AENOPJRVWLDT10 /N
 set _el=!errorlevel!
 if !_el!==14 goto :oemenu
@@ -18659,8 +18733,8 @@ if not defined langmatched (
 echo %_lang% language is not available for Project/Visio apps.
 echo:
 call :dk_color %Blue% "Install Office in the supported language for Project/Visio from the below URL."
-set fixes=%fixes% %mas%genuine-installation-media#download-office
-call :dk_color %_Yellow% "%mas%genuine-installation-media#download-office"
+set fixes=%fixes% %mas%genuine-installation-media
+call :dk_color %_Yellow% "%mas%genuine-installation-media"
 goto :oe_goback
 )
 )
@@ -18721,7 +18795,7 @@ echo:
 call :dk_color %Gray% "To activate Office, run the activation option from the main menu."
 ) else (
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 call :oe_tempcleanup
@@ -18864,7 +18938,7 @@ echo %c2rcommand%
 if %errorlevel% NEQ 0 (
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 goto :oe_goback
@@ -19003,7 +19077,7 @@ echo:
 echo %updcommand%
 %updcommand%
 echo:
-echo Acesse a webpage para obter ajuda - %mas%troubleshoot
+echo Check this webpage for help - %mas%troubleshoot
 goto :oe_goback
 
 ::=======================
@@ -19029,7 +19103,7 @@ if not defined build (
 call :dk_color %Red% "Failed to detect build number for the target FFN."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :oe_goback
 )
 
@@ -19055,7 +19129,7 @@ echo:
 call :dk_color %Red% "Failed to update Office C2R client. Aborting..."
 echo:
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 goto :oe_goback
 )
 
@@ -19073,7 +19147,7 @@ if %errorcode% EQU 0 (
 call :dk_color %Gray% "Now run the Office activation option from the main menu."
 ) else (
 set fixes=%fixes% %mas%troubleshoot
-call :dk_color2 %Blue% "Acesse a webpage para obter ajuda - " %_Yellow% " %mas%troubleshoot"
+call :dk_color2 %Blue% "Check this webpage for help - " %_Yellow% " %mas%troubleshoot"
 )
 
 ::========================================================================================================================================
