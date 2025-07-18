@@ -1,5 +1,5 @@
 @::yfh37fow-random
-@set masver=3.5
+@set masver=3.4
 @setlocal DisableDelayedExpansion
 @echo off
 
@@ -62,13 +62,26 @@ cls
 
 ::  Check LF line ending
 
-
+pushd "%~dp0"
+>nul findstr /v "$" "%~nx0" && (
+echo:
+echo Error - O ativador tem um problema de final de linha LF ou uma linha vazia no final do ativador esta faltando.
+echo:
+echo:
+echo Acesse a webpage para obter ajuda - %mas%troubleshoot
+echo:
+echo:
+ping 127.0.0.1 -n 20 >nul
+popd
+exit /b
+)
+popd
 
 ::========================================================================================================================================
 
 cls
 color 07
-title  Microsoft-Activation-Wsinc %masver%
+title  Microsoft_Activation_Scripts %masver%
 
 set _args=
 set _elev=
@@ -274,6 +287,44 @@ exit /b
 
 ::========================================================================================================================================
 
+::  Check for updates
+
+set -=
+set old=
+set pingp=
+set upver=%masver:.=%
+
+for %%A in (
+activ%-%ated.win
+mass%-%grave.dev
+) do if not defined pingp (
+for /f "delims=[] tokens=2" %%B in ('ping -n 1 %%A') do (
+if not "%%B"=="" (set old=1& set pingp=1)
+for /f "delims=[] tokens=2" %%C in ('ping -n 1 updatecheck%upver%.%%A') do (
+if not "%%C"=="" set old=
+)
+)
+)
+
+if defined old (
+echo _____________________________________________________
+%eline%
+echo Sua versao do ativador [%masver%] esta desatualizada.
+echo _____________________________________________________
+echo:
+if not %_unattended%==1 (
+echo [1] Obter ultima versao do ativador
+echo [0] Continuar mesmo assim
+echo:
+call :dk_color %_Green% "Escolha uma opcao do Menu [1,0] :"
+choice /C:10 /N
+if !errorlevel!==2 rem
+if !errorlevel!==1 (start %selfgit% & start %github% & start %mas% & exit /b)
+)
+)
+
+::========================================================================================================================================
+
 if not exist "%SystemRoot%\Temp\" mkdir "%SystemRoot%\Temp" %nul%
 
 ::  Run script with parameters in unattended mode
@@ -314,7 +365,7 @@ goto dk_done
 
 cls
 color 07
-title  Microsoft %blank%Activation %blank%Wsinc %masver%
+title  Microsoft %blank%Activation %blank%Scripts %masver%
 if not defined terminal mode 76, 34
 
 if %winbuild% GEQ 10240 if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-*EvalEdition~*.mum" set _hwidgo=1
@@ -412,15 +463,15 @@ echo:
 echo:
 echo:           ______________________________________________________
 echo:           
-echo:                [1] Extrair Pasta $OEM$ para Computador
+echo:                [1] Extrair Pasta $OEM$ para computador
 echo:                  
 echo:                [2] Baixar Windows / Office Autentico 
 echo:                ____________________________________________      
 echo:                                                                          
-echo:                [0] Voltar ao Menu Principal
+echo:                [0] Voltar para o Menu Principal
 echo:           ______________________________________________________
 echo:
-call :dk_color2 %_White% "                  " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,0] :"
+call :dk_color2 %_White% "             " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,0] :"
 choice /C:120 /N
 set _erl=%errorlevel%
 
@@ -470,7 +521,7 @@ echo:            [7] HWID    [Windows] ^+ Ohook [Office] ^+ TSforge [ESU]
 echo:            [8] TSforge [Windows] ^+ Online KMS [Office]
 echo:
 call :dk_color2 %_White% "            [R] " %_Green% "Leia-me"
-echo:            [0] Voltar ao Menu Principal
+echo:            [0] Voltar
 echo:         ____________________________________________________________
 echo:  
 call :dk_color2 %_White% "             " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...R,0] :"
@@ -1082,8 +1133,8 @@ set "_Yellow="Black" "Yellow""
 set "nceline=echo: &echo ==== ERROR ==== &echo:"
 set "eline=echo: &call :dk_color %Red% "==== ERROR ====" &echo:"
 if %~z0 GEQ 200000 (
-set "_exitmsg=Voltar ao Menu Principal"
-set "_fixmsg=Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcoo Corrigir licenciamento."
+set "_exitmsg=Voltar"
+set "_fixmsg=Voltar para o Menu Principal, selecione "Solucionar problemas" e execute a opcoo Corrigir licenciamento."
 ) else (
 set "_exitmsg=Sair"
 set "_fixmsg=In Pasta MAS, execute o script de "Solucao de problemas" e selecione a opcaoo Corrigir licenciamento."
@@ -1651,7 +1702,7 @@ echo "%error_code%" | findstr /i "0x800410 0x800440 0x80131501" %nul1% && set wm
 if defined wmifailed (
 set error=1
 call :dk_color %Red% "Checking WMI                            [Not Working]"
-if not defined showfix call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcaoo Corrigir WMI."
+if not defined showfix call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute a opcaoo Corrigir WMI."
 set showfix=1
 )
 
@@ -1846,7 +1897,7 @@ set showfix=1
 ::  If required services are not disabled or corrupted + if there is any error + SoftwareLicensingService errorlevel is not Zero + no fix was shown before
 
 if not defined serv_cor if not defined serv_cste if defined error if /i not %error_code%==0 if not defined showfix (
-if not defined permerror if defined wpaerror (call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute a opcao Corrigir registro WPA." & set showfix=1)
+if not defined permerror if defined wpaerror (call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute a opcao Corrigir registro WPA." & set showfix=1)
 if not defined showfix (
 set showfix=1
 call :dk_color %Blue% "%_fixmsg%"
@@ -2137,10 +2188,10 @@ echo                 ____________________________________________
 echo:
 echo                 [3] Baixar Office's
 echo:
-echo                 [0] %_exitmsg%
+echo                 [0] %_exitmsg% para o Menu Principal
 echo         ____________________________________________________________
 echo: 
-call :dk_color2 %_White% "                 " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3,0] :"
+call :dk_color2 %_White% "                  " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3,0] :"
 choice /C:1230 /N
 set _el=!errorlevel!
 if !_el!==4  exit /b
@@ -2171,7 +2222,7 @@ if not exist %SysPath%\%_slexe% (
 echo [%SysPath%\%_slexe%] arquivo faltando, abortando...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute DIS
+call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute DIS
 Opcoes de restauracao M e verificacao SFC."
 call :dk_color %Blue% "Apos isso, reinicie o sistema e tente ativar novamente."
 echo:
@@ -4016,11 +4067,11 @@ echo               [F] Alterar - Metodo de Ativacao [%_actmethod%]
 echo               _______________________________________________       
 echo:
 echo               [6] Remover Ativacao TSforge
-echo               [7] Baixar Office's
+echo               [7] Baixar Office
 echo               [0] %_exitmsg%
 echo        ______________________________________________________________
 echo:
-call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...A,F,0] :"
+call :dk_color2 %_White% "            " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...A,F,0] :"
 choice /C:12345ABCDEF670 /N
 set _el=!errorlevel!
 
@@ -4115,7 +4166,7 @@ if not exist %SysPath%\%_slexe% (
 echo [%SysPath%\%_slexe%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
+call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
 call :dk_color %Blue% "Apos isso, reinicie o sistema e tente ativar novamente."
 echo:
 set fixes=%fixes% %mas%troubleshoot
@@ -11670,7 +11721,7 @@ echo:
 echo                 [0] %_exitmsg%
 echo:           ______________________________________________________
 echo: 
-call :dk_color2 %_White% "                  " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,0] :"
+call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [1,2,0] :"
 choice /C:120 /N
 set _el=!errorlevel!
 if !_el!==3  exit /b
@@ -11703,7 +11754,7 @@ if defined _fmiss (
 echo [%_fmiss%] arquivo faltando, abortando...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes de Restauracao do DISM e Verificacao SFC."
+call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute as opcoes de Restauracao do DISM e Verificacao SFC."
 call :dk_color %Blue% "After that, restart system and try activation again."
 echo:
 set fixes=%fixes% %mas%troubleshoot
@@ -12456,7 +12507,7 @@ if not defined _server set _port=
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 30
-title  Ativacao Online %KS% %masver%
+title  Online %KS% Activation %masver%
 
 echo:
 echo:
@@ -12476,12 +12527,12 @@ echo               [4] Ativar - Todos
 echo               _______________________________________________  
 echo: 
 if %_norentsk%==0 (
-echo               [5] Tarefa de Renovacao com Ativacao       [Ok]
+echo               [5] Tarefa de Renovacao com Ativacao      [Yes]
 ) else (
 call :dk_color2 %_White% "              [5] Tarefa de Renovacao com Ativacao        " %_Yellow% "[No]"
 )
 if %_NoEditionChange%==0 (
-echo               [6] Alterar edicao se necessario           [Ok]
+echo               [6] Alterar edicao se necessario          [Yes]
 ) else (
 call :dk_color2 %_White% "              [6] Alterar edicao se necessario            " %_Yellow% "[No]"
 )
@@ -12493,11 +12544,11 @@ echo               [8] Definir %KS% Server/Port [%_server%] [%_port%]
 ) else (
 echo               [8] Definir %KS% Server/Port
 )
-echo               [9] Baixar Office's
+echo               [9] Baixar Office
 echo               [0] %_exitmsg%
 echo        ______________________________________________________________
 echo:
-call :dk_color2 %_White% "              " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...8,9,0] :"
+call :dk_color2 %_White% "       " %_Green% "Escolha uma opcao do Menu [1,2,3...8,9,0] :"
 choice /C:1234567890 /N
 set _el=!errorlevel!
 
@@ -12535,7 +12586,7 @@ if not exist %SysPath%\%_slexe% (
 echo [%SysPath%\%_slexe%] file is missing, aborting...
 echo:
 if not defined results (
-call :dk_color %Blue% "Voltar ao Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
+call :dk_color %Blue% "Voltar para o Menu Principal, selecione "Solucionar problemas" e execute as opcoes Restauracao do DISM e Verificacao SFC."
 call :dk_color %Blue% "Apos isto, reinicie o sistema e tente ativar novamente."
 echo:
 set fixes=%fixes% %mas%troubleshoot
@@ -12755,7 +12806,7 @@ if exist "%%~A\Microsoft %%~G\root\vfs\%%#\sppc*dll" set ohook=1
 
 if defined ohook (
 echo:
-call :dk_color %Gray% "Checking Ohook                          [A ativacao Ohook ja esta instalada para o Office]"
+call :dk_color %Gray% "Checking Ohook                          [Ohook activation is already installed for Office]"
 )
 
 ::  Check unsupported office versions
@@ -13273,7 +13324,7 @@ exit /b
 
 cls
 if not defined terminal mode 91, 30
-title  Desinstalacao Completa Online %KS% %masver%
+title  Online %KS% Complete Uninstall %masver%
 
 set "uline=__________________________________________________________________________________________"
 
@@ -16083,7 +16134,7 @@ function ClcRun
 }
 #endregion
 
-$Host.UI.RawUI.WindowTitle = "Verigicar Status de Ativacao"
+$Host.UI.RawUI.WindowTitle = "Check Activation Status"
 if ($All.IsPresent) {
 	$B=$Host.UI.RawUI.BufferSize;$B.Height=3000;$Host.UI.RawUI.BufferSize=$B;
 	if (!$Pass.IsPresent) {clear;}
@@ -16277,7 +16328,7 @@ echo:
 echo:             [0] %_exitmsg%
 echo:       _______________________________________________________________
 echo:          
-call :dk_color2 %_White% "                 " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...0] :"
+call :dk_color2 %_White% "            " %_Green% "Escolha uma opcao do Menu [Ex.: 1,2,3...0] :"
 choice /C:1234560 /N
 set _erl=%errorlevel%
 
@@ -16312,9 +16363,9 @@ for /f "delims=[] tokens=2" %%# in ('ping -n 1 %%a') do (if not "%%#"=="" set _i
 
 echo:
 if defined _int (
-echo      Verificando Conexao de Internet  [Conectada]
+echo      Checking Internet Connection  [Connected]
 ) else (
-call :dk_color2 %_White% "     " %Red% "Verificando Conexao de Internet  [Desconectado]"
+call :dk_color2 %_White% "     " %Red% "Checking Internet Connection  [Not connected]"
 )
 
 echo %line%
@@ -17540,7 +17591,7 @@ echo [INFO] Apos o Edicao ser alterada para "%targetedition%",
 echo o sistema pode nao conseguir alterar a edicao posteriormente.
 echo:
 echo [1] Continuar mesmo assim
-echo [0] Voltar ao Menu Principal
+echo [0] Voltar
 echo:
 call :dk_color %_Green% "Escolha uma opcao do Menu [1,0] :"
 choice /C:10 /N
@@ -18407,7 +18458,7 @@ echo                 [3] Office SingleApps - Retail
 echo                 [4] Office SingleApps - Volume
 echo                 ____________________________________________
 echo:
-echo                 [0] Voltar ao Menu Principal
+echo                 [0] Voltar
 echo         ____________________________________________________________
 echo: 
 call :dk_color2 %_White% "            " %_Green% "Escolha uma opcao do Menu [1,2,3,4,0] :"
@@ -18562,7 +18613,7 @@ if defined Teams_st      echo [T] Teams            : %Teams_st%
 %line%
 echo:
 echo [1] Continuar
-echo [0] Voltar ao Menu Principal
+echo [0] Voltar
 %line%
 echo:
 call :dk_color %_Green% "Escolha uma opcao do Menu [Ex.: 1,0] :"
