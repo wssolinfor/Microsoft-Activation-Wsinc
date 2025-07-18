@@ -1,5 +1,5 @@
 @::yfh37fow-random
-@set masver=3.5
+@set masver=3.4
 @setlocal DisableDelayedExpansion
 @echo off
 
