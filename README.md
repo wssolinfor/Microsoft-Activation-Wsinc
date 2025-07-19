@@ -1,5 +1,3 @@
 # Microsoft-Activation-Wsinc
 
-## https://cdn.winpett.com.br
-
-## https://activate-wsinc.win.office
+## [https://activate-wsinc.win.office](https://cdn.winpett.com.br/scripts/activate-wsinc.win.office)
