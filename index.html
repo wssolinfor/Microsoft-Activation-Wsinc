@@ -1,0 +1,71 @@
+<!-- saved from url=(0026)https://get.activated.win/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body># Este Ativador foi modelado e hospedado em <b>https://cdn.winpett.com.br/</b>. Base oficial: <b>https://massgrave.dev</b><hr><pre>
+$troubleshoot = 'https://massgrave.dev/troubleshoot'
+if ($ExecutionContext.SessionState.LanguageMode.value__ -ne 0) {
+    $ExecutionContext.SessionState.LanguageMode
+    Write-Host "O Windows PowerShell nao esta sendo executado no Modo de Linguagem Completa."
+    Write-Host "Ajuda - https://gravesoft.dev/fix_powershell" -ForegroundColor White -BackgroundColor Blue
+    return
+}
+
+function Check3rdAV {
+    $avList = Get-CimInstance -Namespace root\SecurityCenter2 -Class AntiVirusProduct | Where-Object { $_.displayName -notlike '*windows*' } | Select-Object -ExpandProperty displayName
+    if ($avList) {
+        Write-Host '3rd party Antivirus might be blocking the script - ' -ForegroundColor White -BackgroundColor Blue -NoNewline
+        Write-Host " $($avList -join ', ')" -ForegroundColor DarkRed -BackgroundColor White
+    }
+}
+
+function CheckFile { 
+    param ([string]$FilePath) 
+    if (-not (Test-Path $FilePath)) { 
+        Check3rdAV
+        Write-Host "Falha ao criar o arquivo do Ativador na pasta temporaria, abortando..."
+        Write-Host "Ajuda - $troubleshoot" -ForegroundColor White -BackgroundColor Blue
+        throw 
+    } 
+}
+
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+$URLs = @(
+	'https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/scripts/Microsoft-Activation-Wsinc/MAS_AIO.cmd'
+	'https://raw.githubusercontent.com/wssolinfor/Microsoft-Activation-Wsinc/27ad2ac03a8b081723280d175eb6d21922de81ab/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
+	'https://raw.githubusercontent.com/wssolinfor/Microsoft-Activation-Wsinc/main/MAS/All-In-One-Version-KL/MAS_AIO.cmd'
+)
+
+foreach ($URL in $URLs | Sort-Object { Get-Random }) {
+    try { $response = Invoke-WebRequest -Uri $URL -UseBasicParsing; break } catch {}
+}
+
+if (-not $response) {
+    Check3rdAV
+    Write-Host "Falha ao recuperar Ativador. Nenhum dos repositorios do Ativador disponiveis. abortando..."
+    Write-Host "Ajuda - $troubleshoot" -ForegroundColor White -BackgroundColor Blue
+    return
+}
+
+# Check for AutoRun registry which may create issues with CMD
+$paths = "HKCU:\SOFTWARE\Microsoft\Command Processor", "HKLM:\SOFTWARE\Microsoft\Command Processor"
+foreach ($path in $paths) { 
+    if (Get-ItemProperty -Path $path -Name "Autorun" -ErrorAction SilentlyContinue) { 
+        Write-Warning "Registro de execucao automatica encontrado. O CMD pode travar! `nCopie e cole manualmente o comando abaixo para corrigir:`nRemove-ItemProperty -Path '$path' -Name 'Autorun'"
+    } 
+}
+
+$rand = [Guid]::NewGuid().Guid
+$isAdmin = [bool]([Security.Principal.WindowsIdentity]::GetCurrent().Groups -match 'S-1-5-32-544')
+$FilePath = if ($isAdmin) { "$env:SystemRoot\Temp\MAS_$rand.cmd" } else { "$env:USERPROFILE\AppData\Local\Temp\MAS_$rand.cmd" }
+Set-Content -Path $FilePath -Value "@::: $rand `r`n$response"
+CheckFile $FilePath
+
+$env:ComSpec = "$env:SystemRoot\system32\cmd.exe"
+$chkcmd = & $env:ComSpec /c "echo CMD em funcionamento"
+if ($chkcmd -notcontains "CMD em funcionamento") {
+    Write-Warning "Ativador rodando no cmd.exe."
+}
+saps -FilePath $env:ComSpec -ArgumentList "/c """"$FilePath"" $args""" -Wait
+CheckFile $FilePath
+
+$FilePaths = @("$env:SystemRoot\Temp\MAS*.cmd", "$env:USERPROFILE\AppData\Local\Temp\MAS*.cmd")
+foreach ($FilePath in $FilePaths) { Get-Item $FilePath | Remove-Item }
+</pre></body></html>
