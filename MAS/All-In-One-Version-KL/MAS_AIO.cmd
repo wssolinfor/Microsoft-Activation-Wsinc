@@ -62,20 +62,6 @@ cls
 
 ::  Check LF line ending
 
-pushd "%~dp0"
->nul findstr /v "$" "%~nx0" && (
-echo:
-echo Error - O ativador tem um problema de final de linha LF ou uma linha vazia no final do ativador esta faltando.
-echo:
-echo:
-echo Acesse a webpage para obter ajuda - %mas%troubleshoot
-echo:
-echo:
-ping 127.0.0.1 -n 20 >nul
-popd
-exit /b
-)
-popd
 
 ::========================================================================================================================================
 
