@@ -7,11 +7,11 @@
 > - Traduzido genericamente para PT-BR e mantidas <i>todas as suas funcionalidades de ativação.</i><br>
 <br>
 
-> [!CAUTION]
+> [!IMPORTANT]
 > - <b>Isenção de Responsabilidade:</b><br><br>
 >    * <i>Nós não nos responsabilizamos por problemas de auditoria ou fiscalização sejam quais forem;<br><br>
 >    + A WsSolInfor / Wsinc Org não se responsabiliza por quaisquer danos diretos ou indiretos causados ao usuário ou a terceiros decorrentes do uso da ferramenta;<br><br>
->    * Ao utilizar este Ativador, o usuário <b>concorda expressamente</b> que assume todos os riscos e exonera a WsSolInfor / Wsinc Org de qualquer responsabilidade;<br><br>
+>    * Ao utilizar este Ativador, o usuário <b>concorda expressamente</b> que assume todos os riscos e exonera a WsSolInfor / Wsinc Org de toda e qualquer responsabilidade;<br><br>
 >    + Use à vontade. Portanto, <b>por sua conta.</b></i><br>
 <br>
 
