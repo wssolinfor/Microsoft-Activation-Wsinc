@@ -15,7 +15,7 @@
 >   + Use à vontade. Portanto, <b>por sua conta.</b></i><br>
 <br>
 
-<b><ins>Uso</ins>:</b> <code> Abra o Powershell (Executar como Administrador) e cole o comando abaixo: </code><br>
+<b><ins>Uso</ins>:</b> <code> Abra o Powershell (Executar como Administrador), copie e cole o comando abaixo: </code><br>
 
  ```powershell
 irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
@@ -25,7 +25,7 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 <h2>♥ Donativo ♥</h2>
 
 <i>Eu sou um forte apreciador open source. Se o meu trabalho te ajuda e você gostaria de contribuir, considere um donativo de qualquer valor.</i>
-<br>
+<br><br>
 
 <code><b>Fav</b></code>.:<code>18.099.035 WALLAS SILVA (WSSOLINFOR)</code><br>
 <code><b>Banco</b></code>:<code>CLOUDWALK IP</code>
