@@ -1,7 +1,7 @@
 # [<a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="28">](https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png)</a> Microsoft Activation Wsinc - Ver: 3.5-Beta
 [![Release downloads](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/statics/total_users_activator.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
 
-### Ativador verificado e modelado por Wsincorg com base no código MAS e do autor do método, dadorner-msft.
+### Ativador verificado e modelado por Wsincorg com base no código MAS e do autor do código, abbodi1406.
 <br>
 
 > [!NOTE]
@@ -42,6 +42,6 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 
 <h2>Info / Utils:</h2>
 
-- [x] <b>Repo Method Author:</b> <a href="https://github.com/dadorner-msft">dadorner-msft</a>
+- [x] <b>Repo Code Author:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
