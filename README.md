@@ -22,7 +22,7 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 ```
 <br>
 
-# <img src="https://github.com/wssolinfor/repo-wssolinfor/blob/main/IMG/Donation%20-%20Wsinc.png" width="38"> <sup>Donativo</sup>
+# <img src="https://github.com/wssolinfor/repo-wssolinfor/blob/main/IMG/Donation%20-%20Wsinc.png" width="40"> <sup>Donativo</sup>
 
 <i>Eu sou um forte apreciador open source. Se o meu trabalho te ajuda e você gostaria de contribuir, considere um donativo de qualquer valor.</i>
 <br><br>
