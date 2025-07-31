@@ -1,7 +1,8 @@
 # [<a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="28">](https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png)</a> Microsoft Activation Wsinc - Ver: 3.5-Beta
-[![Release downloads](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/statics/total_users_activator.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
 
-### Ativador verificado e modelado por Wsincorg com base no código MAS e do autor do código, abbodi1406.
+#### Ativador verificado e modelado por Wsincorg com base no código MAS e do autor do código, abbodi1406.
+[![Release downloads](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/statics/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
+
 <br>
 
 > [!NOTE]
