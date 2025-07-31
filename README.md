@@ -22,7 +22,7 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 ```
 <br>
 
-<h2>♥ Donativo ♥</h2>
+# <img src="https://github.com/wssolinfor/repo-wssolinfor/blob/main/IMG/Donation%20-%20Wsinc.png" width="38"> <sup>Donativo</sup>
 
 <i>Eu sou um forte apreciador open source. Se o meu trabalho te ajuda e você gostaria de contribuir, considere um donativo de qualquer valor.</i>
 <br><br>
@@ -42,7 +42,5 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 <h2>Info / Utils:</h2>
 
 - [x] <b>Repo Method Author:</b> <a href="https://github.com/dadorner-msft">dadorner-msft</a>
-
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
-
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
