@@ -1,10 +1,7 @@
-@setlocal DisableDelayedExpansion
-@echo off
-
 ::============================================================================
 ::
-::   Homepage Base Oficial: github.com<>dadorner-msft<.>
-::             Email: dadorner@outlook.com
+::            Homepage Base Oficial: github.com<>dadorner-msft<.>
+::                        Email: dadorner@outlook.com
 ::
 ::============================================================================
 
@@ -435,12 +432,12 @@ echo:             __________________________________________________
 echo:
 echo:             [9] Troubleshoot        - Solucao de Problemas
 echo:             [E] Extras
-echo:             [H] Ajuda               - Repositorio Base Oficial
+echo:             [S] Sobre               - Repositorio Base Oficial
 echo:             [0] Sair
 echo:       ______________________________________________________________
 echo:
 call :dk_color2 %_White% "             " %_Green% "Escolha uma opcao do Menu acima [1,2,3...E,H,0] :"
-choice /C:123456789EH0 /N
+choice /C:123456789ES0 /N
 set _erl=%errorlevel%
 
 if %_erl%==12 exit /b
@@ -16339,7 +16336,7 @@ echo:       _______________________________________________________________
 echo:                                                   
 set "_cl3=1"
 if defined _cl3 (
-call :dk_color3 %_White% "             [1] " %_Green% "Ajuda                  " %Gray% "Repositorio Base Oficial"
+call :dk_color3 %_White% "             [1] " %_Green% "Ajuda                 " %Gray% "Repositorio Wsinc Oficial"
 )
 echo:             ___________________________________________________
 echo:                                                                      
@@ -16364,8 +16361,7 @@ if %_erl%==5 goto:retokens
 if %_erl%==4 goto:fixwmi
 if %_erl%==3 goto:sfcscan
 if %_erl%==2 goto:dism_rest
-:: if %_erl%==1 (start %selfgit% & start %github% & start %mas%troubleshoot & goto at_menu)
-if %_erl%==1 (start %selfgit% & start %github% & goto at_menu)
+if %_erl%==1 (start %selfgit% & goto at_menu)
 goto :at_menu
 
 ::========================================================================================================================================
