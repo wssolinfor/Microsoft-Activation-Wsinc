@@ -46,7 +46,7 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 ```
 <br>
 
-# <img src="https://github.com/wssolinfor/cdn/blob/main/assets/images/img/svg/registry-marketing-icon.svg" width="40"> <sup>Info / Utils:</sup>
+# <img src="https://github.com/wssolinfor/cdn/blob/315b78dbe8135cf38902fc29fe1381057f4cd02f/assets/images/img/svg/registry-marketing-icon.svg" width="40"> <sup>Info / Utils:</sup>
 
 - [x] <b>Repositório Autor do Código:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
