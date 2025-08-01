@@ -51,3 +51,4 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 - [x] <b>Repositório Autor do Código:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
+- [x] <b>Ferramenta de Implantação de Sistemas Windows:</b> <a href="https://winpett.com.br">Winpett-Full</a>
