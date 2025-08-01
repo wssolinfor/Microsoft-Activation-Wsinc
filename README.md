@@ -15,8 +15,10 @@
 >   + A WsSolInfor / Wsinc Org não se responsabiliza por quaisquer danos diretos ou indiretos causados ao usuário ou a terceiros decorrentes do uso da ferramenta;<br><br>
 >   * Ao utilizar este Ativador, o usuário <b>concorda expressamente</b> que assume todos os riscos e exonera a WsSolInfor / Wsinc Org de toda e qualquer responsabilidade;<br><br>
 >   + Use à vontade. Portanto, <b>por sua conta.</b></i><br>
+<br>
 
 <b><ins>USO</ins>:</b> <code> Abra o Powershell (Executar como Administrador), copie e cole o comando abaixo: </code><br>
+<br>
 
  ```powershell
 irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
