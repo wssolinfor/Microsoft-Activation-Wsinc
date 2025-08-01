@@ -29,7 +29,7 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 >  <code><i> O uso deste Ativador é apenas para usuários autenticados!</i> </code>
 <br>
 
-# <img src="https://github.com/wssolinfor/repo-wssolinfor/blob/main/IMG/Donation%20-%20Wsinc.png" width="42"> <sup>Donativo</sup>
+# <img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/Donation%20-%20Wsinc.png" width="42"> <sup>Donativo</sup>
 
 <i>Eu sou um forte apreciador open source. Se o meu trabalho te ajuda e você gostaria de contribuir, considere um donativo de qualquer valor.</i>
 <br><br>
