@@ -15,13 +15,16 @@
 >   + A WsSolInfor / Wsinc Org não se responsabiliza por quaisquer danos diretos ou indiretos causados ao usuário ou a terceiros decorrentes do uso da ferramenta;<br><br>
 >   * Ao utilizar este Ativador, o usuário <b>concorda expressamente</b> que assume todos os riscos e exonera a WsSolInfor / Wsinc Org de toda e qualquer responsabilidade;<br><br>
 >   + Use à vontade. Portanto, <b>por sua conta.</b></i><br>
-<br>
 
-<b><ins>Uso</ins>:</b> <code> Abra o Powershell (Executar como Administrador), copie e cole o comando abaixo: </code><br>
+<b><ins>USO</ins>:</b> <code> Abra o Powershell (Executar como Administrador), copie e cole o comando abaixo: </code><br>
 
  ```powershell
 irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 ```
+<br>
+
+> [!NOTE]
+>  <code><i> O uso deste Ativador é apenas para usuários autenticados!</i> </code>
 <br>
 
 # <img src="https://github.com/wssolinfor/repo-wssolinfor/blob/main/IMG/Donation%20-%20Wsinc.png" width="42"> <sup>Donativo</sup>
@@ -29,13 +32,13 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 <i>Eu sou um forte apreciador open source. Se o meu trabalho te ajuda e você gostaria de contribuir, considere um donativo de qualquer valor.</i>
 <br><br>
 
-<code><b>Fav</b></code>.:<code>18.099.035 WALLAS SILVA (WSSOLINFOR)</code><br>
-<code><b>Banco</b></code>:<code>CLOUDWALK IP</code>
-<br><code><b>Chave Pix (Aleatória)</b></code>:
+* <code><b>Fav</b></code>.:<code>18.099.035 WALLAS SILVA (WSSOLINFOR)</code><br>
+* <code><b>Banco</b></code>:<code>CLOUDWALK IP</code>
+* <code><b>Chave Pix (Aleatória)</b></code>:
 ```
 5a53a772-626a-4f1e-8faf-d31f29a624de
 ```
-<code><b>Chave Pix (CNPJ)</b></code>:
+   * <code><b>Chave Pix (CNPJ)</b></code>:
 ```
 18099035000195
 ```
@@ -43,6 +46,6 @@ irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
 
 <h2>Info / Utils:</h2>
 
-- [x] <b>Repo Code Author:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
+- [x] <b>Repositório Autor do Código:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
