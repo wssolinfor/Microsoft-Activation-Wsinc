@@ -1,7 +1,7 @@
 ::============================================================================
 ::
-::            Homepage Base Oficial: github.com<>dadorner-msft<.>
-::                        Email: dadorner@outlook.com
+::            Homepage Base Oficial: github.com<>abbodi1406<.>
+::                        Email: abbodi86@gmail.com
 ::
 ::============================================================================
 
@@ -54,7 +54,8 @@ exit /b
 
 set "blank="
 set "mas=ht%blank%tps%blank%://mass%blank%grave.dev/"
-set "github=ht%blank%tps%blank%://github.com/dadorner-%blank%msft/activationws"
+set "github=ht%blank%tps%blank%://github.com/abbodi%blank%1406"
+set "secondgit=ht%blank%tps%blank%://github.com/mass%blank%gravel"
 set "selfgit=ht%blank%tps%blank%://github.com/wssolin%blank%for/Micro%blank%soft-Acti%blank%vation-Wsinc"
 
 ::  Check if Null service is working, it's important for the batch script
@@ -93,7 +94,7 @@ popd
 
 cls
 color 07
-title  Microsoft_Activation_Wsinc %masver%
+title  Microsoft_Activation_Wsinc %mawsver%
 
 set _args=
 set _elev=
@@ -305,7 +306,7 @@ exit /b
 :: set -=
 :: set old=
 :: set pingp=
-:: set upver=%masver:.=%
+:: set upver=%mawsver:.=%
 
 :: for %%A in (
 :: activ%-%ated.win
@@ -322,7 +323,7 @@ exit /b
 :: if defined old (
 :: echo _____________________________________________________
 :: %eline%
-:: echo Sua versao [%masver%] do Ativador esta desatualizada.
+:: echo Sua versao [%mawsver%] do Ativador esta desatualizada.
 :: echo _____________________________________________________
 :: echo:
 :: if not %_unattended%==1 (
@@ -378,7 +379,7 @@ goto dk_done
 
 cls
 color 07
-title  Microsoft %blank%Activation %blank%Wsinc %masver%
+title  Microsoft %blank%Activation %blank%Wsinc %mawsver%
 if not defined terminal mode 76, 34
 
 if %winbuild% GEQ 10240 if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-Server*Edition~*.mum" if not exist "%SystemRoot%\Servicing\Packages\Microsoft-Windows-*EvalEdition~*.mum" set _hwidgo=1
@@ -400,19 +401,19 @@ echo:
 echo:
 call :dk_color3 %_White% "               " %Blue% " Microsoft Activation Wsinc - Ver.: 3.5-Beta "
 echo:
-call :dk_color3 %_White% "       " %Gray% " Ativador Modelado Por WsincOrg - Base Oficial: dadorner-msft "
+call :dk_color3 %_White% "       " %Gray% " Ativador Modelado Por Wsinc Org :: Base Original: abbodi1406 "
 echo:       ______________________________________________________________
 echo:
 echo:                            Metodos de Ativacao:
 echo:       ______________________________________________________________
 echo:
 if defined _hwidgo (
-call :dk_color3 %_White% "             [1] " %_Green% "HWID" %_White% "                - Windows"
+call :dk_color3 %_White% "             [1] " %_Yellow% "HWID" %_White% "                - Windows"
 ) else (
 echo:             [1] HWID                - Windows
 )
 if defined _ohookgo (
-call :dk_color3 %_White% "             [2] " %_Green% "Ohook" %_White% "               - Office"
+call :dk_color3 %_White% "             [2] " %_Yellow% "Ohook" %_White% "               - Office"
 ) else (
 echo:             [2] Ohook               - Office
 )
@@ -430,19 +431,20 @@ echo:             [7] Alterar Edicao do Windows
 echo:             [8] Alterar Edicao do Office
 echo:             __________________________________________________      
 echo:
-echo:             [9] Troubleshoot        - Solucao de Problemas
+echo:             [9] Ferramentas         - Solucao de Problemas
 echo:             [E] Extras
-echo:             [S] Sobre               - Repositorio Base Oficial
+echo:             [S] Sobre               - Repositorios Base Oficiais
+call :dk_color3 %_White% "             [W] " %_Green% "Wsinc" %_White% "               - Repositorio deste Ativador"
 echo:             [0] Sair
 echo:       ______________________________________________________________
 echo:
 call :dk_color2 %_White% "             " %_Green% "Escolha uma opcao do Menu acima [1,2,3...E,H,0] :"
-choice /C:123456789ES0 /N
+choice /C:123456789ESW0 /N
 set _erl=%errorlevel%
 
-if %_erl%==12 exit /b
-:: if %_erl%==11 (start %selfgit% & start %github% & start %mas%troubleshoot & goto :MainMenu)
-if %_erl%==11 (start %selfgit% & start %github% & goto :MainMenu)
+if %_erl%==13 exit /b
+if %_erl%==12 (start %selfgit% & goto :MainMenu)
+if %_erl%==11 (start %secondgit% & start %github% & goto :MainMenu)
 if %_erl%==10 goto :Extras
 if %_erl%==9 setlocal & call :troubleshoot      & cls & endlocal & goto :MainMenu
 if %_erl%==8 setlocal & call :change_offedition & cls & endlocal & goto :MainMenu
@@ -616,7 +618,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  HWID Activation %masver%
+title  HWID Activation %mawsver%
 
 set _args=
 set _elev=
@@ -661,7 +663,7 @@ if not defined terminal (
 mode 110, 34
 if exist "%SysPath%\spp\store_test\" mode 134, 34
 )
-title  HWID Activation %masver%
+title  HWID Activation %mawsver%
 
 echo:
 echo Inicializando...
@@ -2162,7 +2164,7 @@ set _rem=0
 
 cls
 color 07
-title  Ohook Activation %masver%
+title  Ohook Activation %mawsver%
 
 set _args=
 set _elev=
@@ -2189,7 +2191,7 @@ if %_rem%==1 goto :oh_uninstall
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 25
-title  Ohook Activation %masver%
+title  Ohook Activation %mawsver%
 call :oh_checkapps
 echo:
 echo:
@@ -2228,7 +2230,7 @@ mode 140, 32
 if exist "%SysPath%\spp\store_test\" mode 140, 32
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=32;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  Ohook Activation %masver%
+title  Ohook Activation %mawsver%
 
 echo:
 echo Inicializando...
@@ -2554,7 +2556,7 @@ goto :dk_done
 
 cls
 if not defined terminal mode 145, 32
-title  Uninstall Ohook Activation %masver%
+title  Uninstall Ohook Activation %mawsver%
 
 set _present=
 set _unerror=
@@ -4006,7 +4008,7 @@ set "_debug=0"
 cls
 color 07
 set KS=K%blank%MS
-title  TSforge Activation %masver%
+title  TSforge Activation %mawsver%
 
 set _args=
 set _elev=
@@ -4054,7 +4056,7 @@ goto dk_done
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 33
-title  TSforge Activation %masver%
+title  TSforge Activation %mawsver%
 
 echo:
 echo:
@@ -4172,7 +4174,7 @@ mode 125, %height%
 if exist "%SysPath%\spp\store_test\" mode 134, %height%
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=%height%;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  TSforge Activation %masver%
+title  TSforge Activation %mawsver%
 
 echo:
 echo Inicializando...
@@ -5558,7 +5560,7 @@ cls
 if not defined terminal (
 mode 100, 30
 )
-title  Remove TSforge Activation %masver%
+title  Remove TSforge Activation %mawsver%
 
 echo:
 echo TSforge activation nao modifica nenhum componente do Windows e nao instala nenhum arquivo novo.
@@ -11677,7 +11679,7 @@ set _NoEditionChange=0
 
 cls
 color 07
-title  KMS38 Activation %masver%
+title  KMS38 Activation %mawsver%
 
 set _args=
 set _elev=
@@ -11724,7 +11726,7 @@ if %_rem%==1 goto :k_uninstall
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 25
-title  KMS38 Activation %masver%
+title  KMS38 Activation %mawsver%
 
 echo:
 echo:
@@ -11758,7 +11760,7 @@ if not defined terminal (
 mode 110, 34
 if exist "%SysPath%\spp\store_test\" mode 134, 34
 )
-title  KMS38 Activation %masver%
+title  KMS38 Activation %mawsver%
 
 echo:
 echo Inicializando...
@@ -12211,7 +12213,7 @@ goto :dk_done
 
 cls
 if not defined terminal mode 99, 28
-title  Remove KMS38 Protection %masver%
+title  Remove KMS38 Protection %mawsver%
 
 %nul% reg delete "HKLM\%specific_kms%" /f
 %nul% reg delete "HKU\S-1-5-20\%specific_kms%" /f
@@ -12492,7 +12494,7 @@ set _port=
 cls
 color 07
 set KS=K%blank%MS
-title  Online %KS% Activation %masver%
+title  Online %KS% Activation %mawsver%
 
 set _args=
 set _elev=
@@ -12527,7 +12529,7 @@ if not defined _server set _port=
 if %_unattended%==0 (
 cls
 if not defined terminal mode 76, 30
-title  Online %KS% Activation %masver%
+title  Online %KS% Activation %mawsver%
 
 echo:
 echo:
@@ -12595,7 +12597,7 @@ mode 115, 32
 if exist "%SysPath%\spp\store_test\" mode 135, 32
 %psc% "&{$W=$Host.UI.RawUI.WindowSize;$B=$Host.UI.RawUI.BufferSize;$W.Height=32;$B.Height=300;$Host.UI.RawUI.WindowSize=$W;$Host.UI.RawUI.BufferSize=$B;}" %nul%
 )
-title  Online %KS% Activation %masver%
+title  Online %KS% Activation %mawsver%
 
 echo:
 echo Inicializando...
@@ -13344,7 +13346,7 @@ exit /b
 
 cls
 if not defined terminal mode 91, 30
-title  Online %KS% Complete Uninstall %masver%
+title  Online %KS% Complete Uninstall %mawsver%
 
 set "uline=__________________________________________________________________________________________"
 
@@ -16325,7 +16327,7 @@ set "line=______________________________________________________________________
 :at_menu
 
 cls
-title  Troubleshoot %masver%
+title  Troubleshoot %mawsver%
 if not defined terminal mode 77, 30
 
 echo:
@@ -17414,7 +17416,7 @@ set "line=echo _________________________________________________________________
 
 cls
 if not defined terminal mode 98, 30
-title  Change Windows Edition %masver%
+title  Change Windows Edition %mawsver%
 
 if %winbuild% LSS 7600 (
 %eline%
@@ -18280,7 +18282,7 @@ set "line=echo _________________________________________________________________
 
 cls
 if not defined terminal mode 98, 30
-title  Change Office Edition %masver%
+title  Change Office Edition %mawsver%
 
 if %winbuild% LSS 7600 (
 %eline%
@@ -18425,7 +18427,7 @@ goto dk_done
 cls
 set fixes=
 if not defined terminal mode 76, 25
-title  Change Office Edition %masver%
+title  Change Office Edition %mawsver%
 echo:
 echo:
 echo:
@@ -18467,9 +18469,9 @@ goto :oe_goback
 cls
 if not defined terminal mode 76, 25
 if %change%==1 (
-title  Change all editions %masver%
+title  Change all editions %mawsver%
 ) else (
-title  Add edition %masver%
+title  Add edition %mawsver%
 )
 
 echo:
@@ -18812,7 +18814,7 @@ goto :oe_goback
 :oe_editedition
 
 cls
-title  Add/Remove Apps %masver%
+title  Add/Remove Apps %mawsver%
 
 call :oe_chkinternet
 if not defined _int (
@@ -18870,7 +18872,7 @@ goto :oe_excludeappspre
 
 :oe_removeedition
 
-title  Remove Office editions %masver%
+title  Remove Office editions %mawsver%
 
 call :ch_getinfo
 
@@ -18954,7 +18956,7 @@ goto :oe_goback
 
 :oe_changeupdchnl
 
-title  Change Office update channel %masver%
+title  Change Office update channel %mawsver%
 call :ch_getinfo
 
 cls
