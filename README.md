@@ -21,7 +21,7 @@
 <br>
 
  ```powershell
-irm cdn.winpett.com.br/scripts/activate-wsinc.win.office | iex
+irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 ```
 <br>
 
