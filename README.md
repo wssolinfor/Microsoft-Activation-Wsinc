@@ -28,6 +28,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 ---
 
 > [!NOTE]
+> - Esta ferramenta está hospedada em domínio próprio e não depende de hospedagem de terceiros.
 > - O uso deste Ativador é apenas para usuários autenticados!
 
 ---
