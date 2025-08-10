@@ -28,7 +28,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 ---
 
 > [!NOTE]
->  <code><i> O uso deste Ativador é apenas para usuários autenticados!</i> </code>
+> - O uso deste Ativador é apenas para usuários autenticados!
 
 ---
 
