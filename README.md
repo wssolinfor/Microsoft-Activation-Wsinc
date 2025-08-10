@@ -3,11 +3,12 @@
 #### Ativador verificado e modelado por Wsincorg com base no código MAS e do autor do código, abbodi1406.
 [![Release users](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/statics/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
 
-<br>
+---
 
 > [!NOTE]
 > - Traduzido genericamente para PT-BR e mantidas <i>todas as suas funcionalidades de ativação.</i><br>
-<br>
+
+---
 
 > [!IMPORTANT]
 > - <b>Isenção de Responsabilidade:</b><br><br>
@@ -15,19 +16,21 @@
 >   + A WsSolInfor / Wsinc Org não se responsabiliza por quaisquer danos diretos ou indiretos causados ao usuário ou a terceiros decorrentes do uso da ferramenta;<br><br>
 >   * Ao utilizar este Ativador, o usuário <b>concorda expressamente</b> que assume todos os riscos e exonera a WsSolInfor / Wsinc Org de toda e qualquer responsabilidade;<br><br>
 >   + Use à vontade. Portanto, <b>por sua conta.</b></i><br>
-<br>
+
+---
 
 <b><ins>USO</ins>:</b> <code> Abra o Powershell (Executar como Administrador), copie e cole o comando abaixo: </code><br>
-<br>
+
 
  ```powershell
 irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 ```
-<br>
+---
 
 > [!NOTE]
 >  <code><i> O uso deste Ativador é apenas para usuários autenticados!</i> </code>
-<br>
+
+---
 
 # [<img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/Donation%20-%20Wsinc.png" width="42" alt="Release donative">](https://t.me/donateswsinc_bot) <sup>Donativo</sup>
 
@@ -44,7 +47,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 ```
 18099035000195
 ```
-<br>
+
 
 # [<img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/registry-marketing-green-icon.svg" width="40" alt="Release utils">](https://winpett.com.br) <sup>Info / Utils:</sup>
 
