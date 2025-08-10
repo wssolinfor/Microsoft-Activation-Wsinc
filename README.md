@@ -39,11 +39,11 @@ irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
 
 * <code><b>Fav</b></code>.:<code>18.099.035 WALLAS SILVA (WSSOLINFOR)</code><br>
 * <code><b>Banco</b></code>:<code>CLOUDWALK IP</code>
-* <code><b>Chave Pix (Aleatória)</b></code>:
+> - <code><b>Chave Pix (Aleatória)</b></code>:
 ```
 5a53a772-626a-4f1e-8faf-d31f29a624de
 ```
-   * <code><b>Chave Pix (CNPJ)</b></code>:
+> - <code><b>Chave Pix (CNPJ)</b></code>:
 ```
 18099035000195
 ```
