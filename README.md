@@ -6,7 +6,7 @@
 ---
 
 > [!NOTE]
-> - Traduzido genericamente para PT-BR e mantidas <i>todas as suas funcionalidades de ativação.</i><br>
+> - Traduzido genericamente para PT-BR e mantidas <i>todas as suas funcionalidades de ativação do código base.</i><br>
 
 ---
 
