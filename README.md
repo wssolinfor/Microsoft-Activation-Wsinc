@@ -23,7 +23,7 @@
 
 
  ```powershell
-irm cdn.winpett.com.br/assets/scripts/ps/activate-wsinc.win.office | iex
+irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 ```
 ---
 
