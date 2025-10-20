@@ -49,6 +49,12 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 18099035000195
 ```
 
+#### 💜 Nossos valiosos contrubuintes e usuários ativos.
+[![Release users](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/assets/images/badges/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
+
+<p align="left"><a href="https://t.me/donateswsinc_bot?start=view_github"><img src="https://github.com/wssolinfor/cdn/raw/refs/heads/main/assets/images/img/svg/img_users-active.svg" width="650" height="auto" /></p>
+
+---
 
 # [<img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/registry-marketing-green-icon.svg" width="40" alt="Release utils">](https://winpett.com.br) <sup>Info / Utils:</sup>
 
