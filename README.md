@@ -1,4 +1,4 @@
-# [<a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="28">](https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png)</a> Microsoft Activation Wsinc - Ver: 3.5-Latest
+# [<a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="28">](https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png)</a> Microsoft Activation Wsinc - Ver: 3.6-Latest
 
 #### Ativador verificado e modelado por WsincOrg com base no código MAS e do autor do código, abbodi1406.
 [![Release users](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/assets/images/badges/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
@@ -60,7 +60,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 
 # [<img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/registry-marketing-green-icon.svg" width="40" alt="Release utils">](https://winpett.com.br) <sup>Info / Utils:</sup>
 
-- [x] <b>Repositório Autor do Código:</b> <a href="https://github.com/abbodi1406">abbodi1406</a>
+- [x] <b>Autor do Código:</b> abbodi1406
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
 - [x] <b>Ferramenta de Implantação de Sistemas Windows:</b> <a href="https://winpett.com.br">Winpett-Full</a>
