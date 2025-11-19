@@ -30,6 +30,9 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 > [!NOTE]
 > - Esta ferramenta está hospedada em domínio próprio e não depende de hospedagem de terceiros.
 > - O uso deste Ativador é apenas para usuários autenticados!
+> - O comando <code>IRM</code> no PowerShell baixa arquivo(s) de URL(s) especificada(s) e o comando <code>IEX</code> o executa.
+> - Sempre verifique a URL antes de executar o comando informado acima e confirme a sua origem.
+> - Portanto, tenha cuidado! Pois alguns espalham malware disfarçado de ativadores usando URLs diferentes no comando <code>IRM</code>.
 
 ---
 
