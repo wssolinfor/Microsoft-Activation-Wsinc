@@ -69,5 +69,10 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 - [x] <b>Baixar Qualquer Windows / Linux:</b> <a href="https://os.click/en">OS.click</a>
 - [x] <b>Baixar Qualquer Office:</b> <a href="https://gravesoft.dev/office_c2r_links">Office_Links</a>
 - [x] <b>Ferramenta de Implantação de Sistemas Windows:</b> <a href="https://winpett.com.br">Winpett-Full</a>
+<br>
 
-**[`^        back to top        ^`](#-microsoft-activation-wsinc---ver-36-latest)**
+<div align="right">
+
+**[`^   Ir para Topo   ^`](#-microsoft-activation-wsinc---ver-36-latest)**
+
+<div>
