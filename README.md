@@ -53,7 +53,10 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 ```
 18099035000195
 ```
-
+> - <code><b>Código Pix Copia e Cola (CNPJ)</b></code>:
+```
+00020126360014BR.GOV.BCB.PIX0114180990350001955204000053039865802BR5913PIXWSSOLINFOR6005NATAL62080504202663040CC5
+```
 ---
 
 ### 💜Alguns dos nossos valiosos doadores e usuários ativos.
