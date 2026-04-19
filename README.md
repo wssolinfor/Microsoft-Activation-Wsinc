@@ -3,7 +3,7 @@
 <h1 align="center"><a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://github.com/wssolinfor/repo-wssolinfor/blob/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="26"></a> Microsoft Activation Wsinc - Ver: 3.6-Latest</h1>
 
 <p align="center"><b>Ativador verificado e modelado por WsincOrg com base no código MAS e do autor do método, abbodi1406.</b></p>
-<p align="left"> <a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/assets/images/badges/total_users_actives.svg"></a></p>
+<p align="left"> <a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/icons/total_users_actives.svg"></a></p>
 
 ---
 
@@ -60,7 +60,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 ---
 
 ### 💜Alguns dos nossos valiosos doadores e usuários ativos.
-[![Release users](https://pub-76fb82ed2f9047bbb8431c8aadeee984.r2.dev/assets/images/badges/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
+[![Release users](https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/icons/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc)
 
 <p align="left"><a href="https://t.me/donateswsinc_bot?start=view_github"><img src="https://github.com/wssolinfor/repo-wssolinfor/raw/refs/heads/main/IMG/img_users-active.svg" width="650" height="auto" /></p>
 
