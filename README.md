@@ -1,6 +1,6 @@
 <p align="center"><a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://wssolinfor.github.io/repo-wssolinfor/IMG/logo-activator-wsinc2.png" alt="Logo Activator" width="140" height="auto" /></p>
 
-<h1 align="center"><a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="26"></a> Microsoft Activation Wsinc - Ver: 3.6-Latest</h1>
+<h1 align="center"><a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/cbd1719d17a5376944d427fb4fbc2fc1ec77cc5e/IMG/Activation.png" width="26"></a> Microsoft Activation Wsinc - Ver: 3.7-Latest</h1>
 
 <p align="center"><b>Ativador verificado e modelado por WsincOrg com base no código MAS e do autor do método, abbodi1406.</b></p>
 <p align="left"> <a href="https://github.com/wssolinfor/Microsoft-Activation-Wsinc"><img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/icons/total_users_actives.svg"></a></p>
