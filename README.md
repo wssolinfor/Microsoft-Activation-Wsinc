@@ -62,7 +62,7 @@ irm cdn.winpett.com.br/assets/scripts/ps/wsinc-activate.win.office | iex
 ### 💜Alguns dos nossos valiosos doadores e usuários ativos.
 [![Release users](https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/main/IMG/icons/total_users_actives.svg)](https://github.com/wssolinfor/Microsoft-Activation-Wsinc) [<a href="https://t.me/donateswsinc_bot?start=view_github"><img src="https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/d3f50329063b2ed2f1eb1738dfcfbfeea16ebd9a/IMG/Cofee_WS.svg" width="21" hspace="2">](https://raw.githubusercontent.com/wssolinfor/repo-wssolinfor/d3f50329063b2ed2f1eb1738dfcfbfeea16ebd9a/IMG/Cofee_WS.svg)</a>[![Logo](https://img.shields.io/badge/Contribuição-FF00A1)](https://t.me/donateswsinc_bot?start=view_github)
 
-<p align="left"><a href="https://t.me/donateswsinc_bot?start=view_github"><img src="https://wssolinfor.github.io/repo-wssolinfor/IMG/icons/social/badge/users-activator-wsinc.svg?width=890" /></p>
+<p align="left"><a href="https://t.me/donateswsinc_bot?start=view_github"><img src="https://wssolinfor.github.io/repo-wssolinfor/IMG/icons/social/badge/users-activator-wsinc.svg?width=950" /></p>
 
 ---
 
